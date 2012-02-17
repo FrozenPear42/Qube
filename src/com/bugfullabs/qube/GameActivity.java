@@ -2,8 +2,6 @@ package com.bugfullabs.qube;
 
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
-import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.IEntity.IEntityMatcher;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.background.SpriteBackground;
 import org.anddev.andengine.entity.sprite.Sprite;
@@ -22,6 +20,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 import com.bugfullabs.qube.level.Level;
 import com.bugfullabs.qube.level.LevelFileReader;
+import com.bugfullabs.qube.level.LevelSceneFactory;
 import com.bugfullabs.qube.util.AlignedText;
 import com.bugfullabs.qube.util.Button;
 
@@ -63,16 +62,26 @@ private int stars = 2;
 private BitmapTextureAtlas mBigFontTexture;
 
 
+private TextureRegion cubeTexture;
+
+private LevelSceneFactory lSF;
+
+
 @Override
 protected Scene onAssetsLoaded() {
 	this.mEngine.registerUpdateHandler(new FPSLogger());
 	
-	gameScene = level.getScene();
+	lSF = new LevelSceneFactory(level, this);
+	
+	gameScene = lSF.createScene();
 	
 	gameScene.setBackground(new SpriteBackground(new Sprite(0, 0, background)));
 	
+	
+	
 	for (int i = 0; i < level.getNumberOfCubes(); i++){
-	gameScene.attachChild(level.getCube(i));
+		level.getCube(i).setTextureRegion(cubeTexture);
+		level.getCube(i).attachToScene(gameScene);
 	}
 	
 	this.mEngine.registerUpdateHandler(updateTimer = new TimerHandler(0.3f, true, new ITimerCallback(){
@@ -94,6 +103,7 @@ protected void assetsToLoad() {
 	super.setLoadingProgress(20);
 	this.background = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "bg.png", 0, 0);
 	this.buttonTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "button.png", 800, 0);
+	this.cubeTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "cube.png", 0, 480);
 	this.mFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	this.mBigFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	
@@ -101,7 +111,7 @@ protected void assetsToLoad() {
     this.Stroke = new StrokeFont(mFontTexture, typeface, 26, true, Color.WHITE, 2, Color.BLACK);
     this.bigFont = new StrokeFont(mBigFontTexture, typeface, 42, true, Color.WHITE, 2, Color.BLACK);
     super.setLoadingProgress(90);
-    
+	
     this.starAtlas = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
     this.starFull = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.starAtlas, this, "star_full.png", 0, 0);
     this.starBlank = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.starAtlas, this, "star_half_full.png", 128, 0);
@@ -262,19 +272,19 @@ private void createScoreScene(){
 	
 	scoreScene.attachChild(text);
 	
-	final Button nextLevel = new Button(scoreScene, 150, 300, 250, 75, getString(R.string.nextlevel), buttonTexture, Stroke){
+	new Button(scoreScene, 150, 300, 250, 75, getString(R.string.nextlevel), buttonTexture, Stroke){
 		@Override
 		public void onButtonPressed(){
 			nextLevel();
 		}
 	};
-	final Button replay = new Button(scoreScene, 400, 300, 250, 75, getString(R.string.reset), buttonTexture, Stroke){
+	new Button(scoreScene, 400, 300, 250, 75, getString(R.string.reset), buttonTexture, Stroke){
 		@Override
 		public void onButtonPressed(){
 			resetLevel();
 		}
 	};
-	final Button mainMenu = new Button(scoreScene, 275, 375, 250, 75, getString(R.string.mainmenu), buttonTexture, Stroke){
+	new Button(scoreScene, 275, 375, 250, 75, getString(R.string.mainmenu), buttonTexture, Stroke){
 		@Override
 		public void onButtonPressed(){
 			GameActivity.this.finish();

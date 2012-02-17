@@ -4,36 +4,20 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
-
 import com.bugfullabs.qube.CubeEntity;
-
-
 import android.util.Log;
 
 public class Level{
 
 	private int level_pattern[][];
-	
-	
 	private int width;
-	private int height;
-		
-	private int numberOfCubes = 0;
-	
-	private static final int ITEM_BLANK = 0;
-	
+	private int height;		
+	private int numberOfCubes = 10;		
 	private Scene gameScene;
-	
 	private ArrayList<CubeEntity> cubes;
 
-
 	private int id;
-
-
 	private int levelpackId;
-
-	public static ArrayList<TextureRegion> cubeTextures; 
 	
 	public Level(int columns, int rows, int id, int levelpackId){
 		
@@ -44,7 +28,7 @@ public class Level{
 	
 		for (int i = 0; i < columns; i++){
 			for (int j = 0; j < rows; j++){				
-				level_pattern[i][j] = ITEM_BLANK;		
+				level_pattern[i][j] = 0;		
 			}	
 		
 		}
@@ -78,57 +62,6 @@ public class Level{
 	}
 	
 	
-	
-	public Scene getScene(){
-	
-	this.gameScene	= new Scene();	
-	  
-
-	for(int i = 0; i < width; i++){
-    	  for(int j = 0; j < height; j++){
-    	  
-    	  switch(level_pattern[i][j])
-    	  {
-    	  
-    	  case 0:	//BLANK
-    		  
-    		  break;
-    	  
-    	  case 1:	//SOLID 
-    		  
-    		  final Rectangle rect = new Rectangle(i*32, j*32, 32, 32);
-    		  rect.setColor(1.0f, 0.456f, 0.89f);
-    		  gameScene.attachChild(rect);
-    		  Log.i("SOLID",Integer.toString(i)+" . "+Integer.toString(j));
-    		  
-    		  break;
-
-    	  case 2:	//END
-    		  
-    		  final Rectangle end = new Rectangle(i*32, j*32, 32, 32);
-    		  end.setColor(0.0f, 1.0f, 0.0f);
-    		  gameScene.attachChild(end);
-    		  Log.i("END",Integer.toString(i)+" . "+Integer.toString(j));
-    		  
-    		  break;
-    	  case 3:	//END
-	  
-	  final Rectangle star = new Rectangle(i*32, j*32, 32, 32);
-	  star.setColor(0.4f, 0.0f, 1.0f);
-	  gameScene.attachChild(star);
-	  Log.i("END",Integer.toString(i)+" . "+Integer.toString(j));
-	  
-	  break;
-
-    	  }
-    		  
-    	 }
-	  }	
-	
-	return this.gameScene;
-	}
-	
-	
 	public CubeEntity getCube(int number){
 			
 		return cubes.get(number);
@@ -155,11 +88,8 @@ public class Level{
 		Log.w("color", Integer.toString(color));
 		Log.w("index", Integer.toString(index));
 		
-		
-		final CubeEntity cube;
-		
-		cube = new CubeEntity(x*32, y*32, cubeTextures.get(color));
-
+	
+		final CubeEntity cube = new CubeEntity(x*32, y*32);
 		cubes.add(index, cube);
 	
 	}

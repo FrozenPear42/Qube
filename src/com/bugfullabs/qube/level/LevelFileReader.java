@@ -4,14 +4,8 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.anddev.andengine.ui.activity.BaseGameActivity;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
-
-import android.content.res.AssetManager;
-
-import com.bugfullabs.qube.R;
 
 public class LevelFileReader{
 	

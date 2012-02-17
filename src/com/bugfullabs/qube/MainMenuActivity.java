@@ -1,7 +1,5 @@
 package com.bugfullabs.qube;
 
-import java.util.ArrayList;
-
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.background.SpriteBackground;
 import org.anddev.andengine.entity.sprite.Sprite;
@@ -11,7 +9,6 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
-import com.bugfullabs.qube.level.Level;
 import com.bugfullabs.qube.util.Button;
 
 import android.content.Intent;
@@ -85,14 +82,7 @@ public class MainMenuActivity extends LoadingActivity{
         this.mFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         Typeface typeface =  Typeface.createFromAsset(getAssets(), "font/FOO.ttf");
         Stroke = new StrokeFont(mFontTexture, typeface, 26, true, Color.WHITE, 2, Color.BLACK);
-        super.setLoadingProgress(90);
-       
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
-        Level.cubeTextures = new ArrayList<TextureRegion>(10);
-        final BitmapTextureAtlas levelAtlas = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        Level.cubeTextures.add(0 ,BitmapTextureAtlasTextureRegionFactory.createFromAsset(levelAtlas, this, "cube.png", 0, 0));
-        this.mEngine.getTextureManager().loadTexture(levelAtlas);
-        
+        super.setLoadingProgress(90);      
         this.mEngine.getTextureManager().loadTextures(this.mAtlas, this.mFontTexture);
         this.mEngine.getFontManager().loadFonts(Stroke);      
         
