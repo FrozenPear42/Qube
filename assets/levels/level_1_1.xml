@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+
+<level rows="15" columns="25" id="1" levelpackId="1">
+
+<row number="1">
+<item column="1" id="1"/>
+<item column="2" id="1"/>
+<item column="3" id="1"/>
+<item column="4" id="1"/>
+<item column="5" id="1"/>
+<item column="6" id="1"/>
+<item column="7" id="1"/>
+<item column="8" id="1"/>
+<item column="9" id="1"/>
+<item column="10" id="1"/>
+<item column="11" id="1"/>
+<item column="12" id="1"/>
+
+</row>
+
+<row number="2">
+<item column="1" id="1"/>
+<item column="12" id="1"/>
+</row>
+
+<row number="3">
+<item column="1" id="1"/>
+<item column="12" id="1"/>
+</row>
+
+<row number="4">
+<item column="1" id="1"/>
+<item column="12" id="1"/>
+</row>
+
+<row number="5">
+<item column="1" id="1"/>
+<item column="12" id="1"/>
+</row>
+
+<row number="6">
+<item column="1" id="1"/>
+<item column="12" id="1"/>
+</row>
+
+<row number="13">
+<item column="1" id="1"/>
+<item column="2" id="2"/>
+<item column="25" id="1"/>
+</row>
+
+
+<row number="14">
+<item column="1" id="1"/>
+<item column="2" id="1"/>
+<item column="3" id="1"/>
+<item column="4" id="1"/>
+<item column="5" id="1"/>
+<item column="6" id="1"/>
+<item column="7" id="1"/>
+<item column="8" id="1"/>
+<item column="9" id="1"/>
+<item column="10" id="1"/>
+<item column="11" id="1"/>
+<item column="24" id="1"/>
+<item column="25" id="1"/>
+</row>
+
+
+<cubes number="2">
+<cube color="0" column ="3" row="4" id="1"/>
+<cube color="0" column ="6" row="4" id="2"/>
+</cubes>
+
+</level>
+

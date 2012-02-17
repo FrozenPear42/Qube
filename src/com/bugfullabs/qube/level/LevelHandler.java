@@ -1,0 +1,107 @@
+package com.bugfullabs.qube.level;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+
+
+public class LevelHandler extends DefaultHandler{
+
+		// ===========================================================
+		// Fields
+		// ===========================================================
+		
+		private boolean in_leveltag = false;
+		private boolean in_rowtag = false;
+		private boolean in_cubestag = false;
+		
+		private int current_row = 0;
+		
+		
+		Level level;
+		
+
+		public Level getLevel(){
+			
+			
+			return this.level;
+		}
+		
+
+		@Override
+		public void startDocument() throws SAXException {
+
+		}
+
+		@Override
+		public void endDocument() throws SAXException {
+
+		}
+
+		/** Gets be called on opening tags like: 
+		 * <tag> 
+		 * Can provide attribute(s), when xml was like:
+		 * <tag attribute="attributeValue">*/
+		@Override
+		public void startElement(String namespaceURI, String localName,
+				String qName, Attributes atts) throws SAXException {
+			if (localName.equals("level")) {
+				this.in_leveltag = true;
+				
+				String rowsValue = atts.getValue("rows");
+				String columnsValue = atts.getValue("columns");
+				
+				level = new Level(Integer.parseInt(columnsValue), Integer.parseInt(rowsValue), Integer.parseInt(atts.getValue("id")), Integer.parseInt(atts.getValue("levelpackId")));
+				
+			}else if (localName.equals("row")) {
+				
+				current_row = Integer.parseInt(atts.getValue("number"));
+				this.in_rowtag = true;
+
+			}else if (localName.equals("item")) {
+			
+			if(in_rowtag == true)
+			{
+			
+				level.setItem(Integer.parseInt(atts.getValue("column")) - 1, current_row - 1,  Integer.parseInt(atts.getValue("id")));
+			}
+			}else if (localName.equals("cubes")){
+				in_cubestag = true;	
+				level.setNumberOfCubes(Integer.parseInt(atts.getValue("number")));
+				//level.setNumberOfCubes(2);
+			}else if(localName.equals("cube")){
+
+				
+				level.setCube(Integer.parseInt(atts.getValue("column")), Integer.parseInt(atts.getValue("row")), Integer.parseInt(atts.getValue("color")), Integer.parseInt(atts.getValue("id"))-1);	
+				
+				
+				
+			}
+		}
+		
+		/** Gets be called on closing tags like: 
+		 * </tag> */
+		@Override
+		public void endElement(String namespaceURI, String localName, String qName)
+				throws SAXException {
+			if (localName.equals("level")) {
+				this.in_leveltag = false;
+			}else if (localName.equals("row")) {
+				this.in_rowtag = false;
+			}else if (localName.equals("cubes")) {
+				this.in_cubestag = false;
+			}
+			
+			
+		}
+		
+		/** Gets be called on the following structure: 
+		 * <tag>characters</tag> */
+		@Override
+	    public void characters(char ch[], int start, int length) {
+
+			
+	    	}	
+		
+}

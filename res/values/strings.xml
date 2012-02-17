@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Qube</string>
+    
+   <string name="newgame">Play</string>
+   <string name="options">Options</string>
+   <string name="exit">Exit</string>
+   
+   <string name="music">Music: %1$s</string>
+   <string name="sound">Sound: %1$s</string>
+   <string name="reset">Reset</string>
+   
+   <string name="yes">Yes</string>
+   <string name="no">No</string>
+   
+   <string name="mainmenu">Main Menu</string>
+   <string name="nextlevel">Next Level</string>
+   
+   <string name="levelpack1">Project</string>
+   <string name="levelpack2">Metal</string>
+   <string name="levelpack3">Wood</string>
+   
+    
+</resources>
