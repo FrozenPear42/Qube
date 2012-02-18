@@ -116,7 +116,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         		this.background_0 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBackground_0, this, "bg_0.png", 0, 0);
                 
         		this.mBackground_1 = new BitmapTextureAtlas(1024, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        		this.background_1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBackground_0, this, "bg_0.png", 0, 0);
+        		this.background_1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBackground_1, this, "bg_0.png", 0, 0);
                 
         		
         		
@@ -264,6 +264,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
  
         }
  
+        
         //Here is where you call the item load.
         private void loadLevel(final int iLevel) {
                 if (iLevel != -1) {

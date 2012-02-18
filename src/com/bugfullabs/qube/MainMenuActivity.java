@@ -140,7 +140,9 @@ public class MainMenuActivity extends LoadingActivity{
 			@Override
 			public void onButtonPressed(){
 			
-				editor.putBoolean("music", !music);
+				music = !music;
+				
+				editor.putBoolean("music", music);
 				editor.commit();
 				if(music == true){
 				this.setText(String.format(getString(R.string.music), getString(R.string.yes)));
@@ -153,8 +155,11 @@ public class MainMenuActivity extends LoadingActivity{
 		@Override
 		public void onButtonPressed(){
 		
-			editor.putBoolean("sound", !sound);
+			sound = !sound;
+			
+			editor.putBoolean("sound", sound);
 			editor.commit();
+			
 			if(sound == true){
 			this.setText(String.format(getString(R.string.sound), getString(R.string.yes)));
 			}else{
