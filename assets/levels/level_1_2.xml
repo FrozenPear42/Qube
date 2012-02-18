@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<level rows="15" columns="25" id="2" levelpackId="1">
+<level rows="15" columns="25" id="2" levelpackid="1" texture="levelpack_2">
 
 <row number="1">
 <item column="1" id="1"/>

@@ -18,10 +18,14 @@ public class Level{
 	private int id;
 	private int levelpackId;
 	
-	public Level(int columns, int rows, int id, int levelpackId){
+	private String levelTexture;
+	
+	public Level(int columns, int rows, int id, int levelpackId, String texture){
 		
 		width = columns;
 		height = rows;
+		
+		this.levelTexture = texture;
 		
 		level_pattern = new int[columns][rows];
 	
@@ -96,5 +100,8 @@ public class Level{
 		return levelpackId;
 	}
 	
+	public String getLevelTexture(){
+		return this.levelTexture;
+	}
 	
 }

@@ -52,7 +52,7 @@ public class LevelHandler extends DefaultHandler{
 				String rowsValue = atts.getValue("rows");
 				String columnsValue = atts.getValue("columns");
 				
-				level = new Level(Integer.parseInt(columnsValue), Integer.parseInt(rowsValue), Integer.parseInt(atts.getValue("id")), Integer.parseInt(atts.getValue("levelpackId")));
+				level = new Level(Integer.parseInt(columnsValue), Integer.parseInt(rowsValue), Integer.parseInt(atts.getValue("id")), Integer.parseInt(atts.getValue("levelpackid")), atts.getValue("texture"));
 				
 			}else if (localName.equals("row")) {
 				

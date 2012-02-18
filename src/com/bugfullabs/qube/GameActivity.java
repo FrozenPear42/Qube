@@ -45,8 +45,6 @@ private TimerHandler updateTimer;
 
 private BitmapTextureAtlas mAtlas;
 
-private TextureRegion background;
-
 private BitmapTextureAtlas mFontTexture;
 
 private StrokeFont Stroke;
@@ -61,13 +59,13 @@ private TextureRegion starFull;
 
 private TextureRegion starBlank;
 
-private int stars = 2;
+private int stars = 0;
 
 private BitmapTextureAtlas mBigFontTexture;
 
 private LevelSceneFactory lSF;
 
-private TexturePack cubesPack;
+private TexturePack levelPack;
 
 
 
@@ -75,11 +73,10 @@ private TexturePack cubesPack;
 protected void assetsToLoad() {
 		
 	super.setLoadingProgress(10);
-	this.mAtlas = new BitmapTextureAtlas(1024, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+	this.mAtlas = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 	super.setLoadingProgress(20);
-	this.background = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "bg.png", 0, 0);
-	this.buttonTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "button.png", 800, 0);
+	this.buttonTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "button.png", 0, 0);
 	
 	this.mFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	this.mBigFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -95,13 +92,13 @@ protected void assetsToLoad() {
     
     
     try {
-		cubesPack = new TexturePackLoader(this, "gfx/game/").loadFromAsset(this, "cubes.xml");
+		levelPack = new TexturePackLoader(this, "gfx/game/").loadFromAsset(this, level.getLevelTexture()+".xml");
 	} catch (TexturePackParseException e) {
 		e.printStackTrace();
 	}
     
     
-    this.mEngine.getTextureManager().loadTextures(this.mAtlas, this.mFontTexture, this.mBigFontTexture,this.starAtlas, this.cubesPack.getTexture());
+    this.mEngine.getTextureManager().loadTextures(this.mAtlas, this.mFontTexture, this.mBigFontTexture,this.starAtlas, this.levelPack.getTexture());
     this.mEngine.getFontManager().loadFonts(Stroke, bigFont);      
     super.setLoadingProgress(100);
 	
@@ -115,11 +112,9 @@ protected void assetsToLoad() {
 protected Scene onAssetsLoaded() {
 	this.mEngine.registerUpdateHandler(new FPSLogger());
 	
-	lSF = new LevelSceneFactory(level, cubesPack);
+	lSF = new LevelSceneFactory(level, levelPack);
 	
 	gameScene = lSF.createScene();
-	
-	gameScene.setBackground(new SpriteBackground(new Sprite(0, 0, background)));
 	
 	this.mEngine.registerUpdateHandler(updateTimer = new TimerHandler(0.3f, true, new ITimerCallback(){
 	@Override
@@ -224,7 +219,7 @@ private void proceedCollision(int id, int cubeId, int nextDirection){
 		
 	case 3:
 		
-		//TODO: FIX STAR DISAPEAR
+		//TODO: FIX - STAR HAS TO DISAPEAR
 		
 		stars++;
 		
@@ -251,8 +246,6 @@ private void resetLevel(){
 	
 	this.stars = 0;
 	
-	this.mEngine.unregisterUpdateHandler(updateTimer);
-	
 	this.gameScene.detachChildren();
 	
 	this.mEngine.setScene(onAssetsLoaded());
@@ -260,21 +253,10 @@ private void resetLevel(){
 }
 
 private void createScoreScene(){
+	
 	scoreScene = new Scene() ;
 	
-	scoreScene.setBackground(new SpriteBackground(new Sprite(0,0,background)));
-	
-	for(int i = 1; i <= stars; i++){
-	final Sprite star = new Sprite(80+(i*128), 175, starFull);	
-	scoreScene.attachChild(star);
-	}
-	
-	for(int i = stars+1; i <= 3; i++){
-	final Sprite star = new Sprite(80+(i*128), 175, starBlank);	
-	scoreScene.attachChild(star);	
-	}
-			
-		
+	scoreScene.setBackground(new SpriteBackground(new Sprite(0,0,this.levelPack.getTexturePackTextureRegionLibrary().get(LevelSceneFactory.BG_ID))));
 	
 	final AlignedText text = new AlignedText(0, 50, bigFont, "CONGRATULATIONS!!!", HorizontalAlign.CENTER, VerticalAlign.CENTER, 800, 60);
 	
@@ -302,6 +284,18 @@ private void createScoreScene(){
 }
 
 private void loadScoreScene(){
+	this.mEngine.unregisterUpdateHandler(updateTimer);
+	
+	for(int i = 1; i <= stars; i++){
+	final Sprite star = new Sprite(80+(i*128), 175, starFull);	
+	scoreScene.attachChild(star);
+	}
+	
+	for(int i = stars+1; i <= 3; i++){
+	final Sprite star = new Sprite(80+(i*128), 175, starBlank);	
+	scoreScene.attachChild(star);	
+	}
+	
 	this.mEngine.setScene(scoreScene);
 }
 
