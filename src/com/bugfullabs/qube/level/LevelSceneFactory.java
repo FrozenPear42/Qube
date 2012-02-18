@@ -4,16 +4,13 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.background.SpriteBackground;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;
-import android.util.Log;
+
+import com.bugfullabs.qube.game.GameValues;
 
 
 
 
 public class LevelSceneFactory{
-	
-	private Level level;
-	private Scene levelScene;
-	private TexturePack txPack;
 	
 	
 	public static final int CUBE0_ID = 0;
@@ -34,15 +31,11 @@ public class LevelSceneFactory{
 	public static final int STAR_ID = 15;	
 	public static final int BG_ID = 16;
 	
-	public LevelSceneFactory(Level mLevel, TexturePack txPack){
+
 	
-		this.level = mLevel;
-		this.txPack = txPack;
-	}
-	
-	
-	public Scene createScene(){	
-			this.levelScene	= new Scene();	
+	public static Scene createScene(Level level, TexturePack txPack){	
+			
+			Scene levelScene = new Scene();	
 			  
 			levelScene.setBackground(new SpriteBackground(new Sprite(0, 0, txPack.getTexturePackTextureRegionLibrary().get(BG_ID))));
 
@@ -52,34 +45,25 @@ public class LevelSceneFactory{
 		    	  switch(level.getItemNumber(i, j))
 		    	  {
 		    	  
-		    	  case 0:	//BLANK
-		    		  
-		    		  break;
-		    	  
-		    	  case 1:	//SOLID 
-		    		  
-		    		  final Sprite solid = new Sprite(i*32, j*32, txPack.getTexturePackTextureRegionLibrary().get(SOLID_ID));
-		    		  levelScene.attachChild(solid);
-		    		  Log.i("SOLID",Integer.toString(i)+" . "+Integer.toString(j));
-		    		  
+		    	  case GameValues.ITEM_SOLID:	//SOLID 	  
+		    		  levelScene.attachChild(new Sprite(i*32, j*32, txPack.getTexturePackTextureRegionLibrary().get(SOLID_ID)));
 		    		  break;
 
-		    	  case 2:	//END
-		    		  
-		    		  final Sprite end = new Sprite(i*32, j*32, txPack.getTexturePackTextureRegionLibrary().get(END0_ID));
-		    		  levelScene.attachChild(end);
-		    		  Log.i("END",Integer.toString(i)+" . "+Integer.toString(j));
-		    		  
+		    	  case GameValues.ITEM_STAR:	//STAR
+		    		  levelScene.attachChild(new Sprite(i*32, j*32, txPack.getTexturePackTextureRegionLibrary().get(STAR_ID)));
 		    		  break;
-		    	  case 3:	//STAR
-			  
-			  final Sprite star = new Sprite(i*32, j*32, txPack.getTexturePackTextureRegionLibrary().get(STAR_ID));
-			  levelScene.attachChild(star);
-			  Log.i("STAR",Integer.toString(i)+" . "+Integer.toString(j));
-			  
-			  break;
-
+		    		  
+			  	  default:
+			  		
+			  		 break;
+			  	
 		    	  }
+		    	  
+		    	  //ENDS
+		    	  if(level.getItemNumber(i, j) >= GameValues.ITEM_END_0 &&  level.getItemNumber(i, j) <= GameValues.ITEM_END_6){
+		    		  levelScene.attachChild(new Sprite(i*32, j*32, txPack.getTexturePackTextureRegionLibrary().get(level.getItemNumber(i, j))));  
+		    	  }
+		    	  //END ENDS
 		    		  
 		    	 }
 			  }	
@@ -91,7 +75,7 @@ public class LevelSceneFactory{
 			}
 			
 			
-			return this.levelScene;
+			return levelScene;
 	}
 	
 }

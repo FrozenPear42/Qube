@@ -2,10 +2,9 @@ package com.bugfullabs.qube.level;
 
 import java.util.ArrayList;
 
-import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
+
 import com.bugfullabs.qube.game.CubeEntity;
-import android.util.Log;
 
 public class Level{
 
@@ -14,7 +13,7 @@ public class Level{
 	private int height;		
 	private int numberOfCubes = 10;		
 	private ArrayList<CubeEntity> cubes;
-
+	
 	private int id;
 	private int levelpackId;
 	
@@ -28,10 +27,11 @@ public class Level{
 		this.levelTexture = texture;
 		
 		level_pattern = new int[columns][rows];
-	
+
+		
 		for (int i = 0; i < columns; i++){
 			for (int j = 0; j < rows; j++){				
-				level_pattern[i][j] = 0;		
+				level_pattern[i][j] = 0;
 			}	
 		
 		}
@@ -46,6 +46,7 @@ public class Level{
 		
 	}
 	
+
 	
 	public int getWidth(){
 		
@@ -102,6 +103,14 @@ public class Level{
 	
 	public String getLevelTexture(){
 		return this.levelTexture;
-	}
+	}	
 	
+	
+	public void removeCube(int id, Scene scene){
+		
+		cubes.get(id).removeCube(scene);
+		cubes.get(id).setFinished(true);
+		
+	}
 }
+

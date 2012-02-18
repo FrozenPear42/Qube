@@ -23,6 +23,8 @@ public class CubeEntity {
 	
 	private Sprite sprite;
 	
+	private boolean finished = false;
+	
 	public CubeEntity(int pX, int pY, int pColor) {
 	x = pX;
 	y = pY;
@@ -72,5 +74,23 @@ public class CubeEntity {
 		
 		return scene;
 	}
+	
+	
+	public void removeCube(Scene scene){	
+		
+		scene.detachChild(sprite);
+		
+	}
+
+	public void setFinished(boolean isFinished) { 
+		finished = isFinished;
+	}
+	
+	public boolean isFinished() { 
+		return finished;
+	}
+	
+		
+	
 	
 }

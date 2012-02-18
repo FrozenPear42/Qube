@@ -20,6 +20,7 @@
 
 <row number="2">
 <item column="1" id="1"/>
+<item column="2" id="8"/>
 <item column="12" id="1"/>
 </row>
 
@@ -45,7 +46,7 @@
 
 <row number="13">
 <item column="1" id="1"/>
-<item column="2" id="2"/>
+<item column="2" id="7"/>
 <item column="25" id="1"/>
 </row>
 

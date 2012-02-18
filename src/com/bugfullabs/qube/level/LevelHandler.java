@@ -69,7 +69,6 @@ public class LevelHandler extends DefaultHandler{
 			}else if (localName.equals("cubes")){
 				in_cubestag = true;	
 				level.setNumberOfCubes(Integer.parseInt(atts.getValue("number")));
-				//level.setNumberOfCubes(2);
 			}else if(localName.equals("cube")){
 
 				
