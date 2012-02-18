@@ -93,10 +93,10 @@
 
 <cubes number="5">
 <cube color="0" column ="3" row="4" id="1"/>
-<cube color="0" column ="6" row="4" id="2"/>
-<cube color="0" column ="9" row="4" id="3"/>
-<cube color="0" column ="12" row="4" id="4"/>
-<cube color="0" column ="14" row="4" id="5"/>
+<cube color="1" column ="6" row="4" id="2"/>
+<cube color="2" column ="9" row="4" id="3"/>
+<cube color="3" column ="12" row="4" id="4"/>
+<cube color="4" column ="14" row="4" id="5"/>
 </cubes>
 
 </level>

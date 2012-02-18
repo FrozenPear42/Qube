@@ -1,4 +1,4 @@
-package com.bugfullabs.qube;
+package com.bugfullabs.qube.util;
 
 import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.entity.primitive.Rectangle;

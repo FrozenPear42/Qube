@@ -1,4 +1,4 @@
-package com.bugfullabs.qube;
+package com.bugfullabs.qube.game;
 
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.sprite.Sprite;
@@ -19,11 +19,14 @@ public class CubeEntity {
 	private float x;
 	private float y;
 	
+	private int color;
+	
 	private Sprite sprite;
 	
-	public CubeEntity(int pX, int pY) {
+	public CubeEntity(int pX, int pY, int pColor) {
 	x = pX;
 	y = pY;
+	color = pColor;
 	}
 	
 	public int getDirection(){
@@ -57,6 +60,10 @@ public class CubeEntity {
 
 	public float getY(){
 		return y;
+	}
+	
+	public int getColor(){
+		return this.color;
 	}
 	
 	public Scene attachToScene(Scene scene){

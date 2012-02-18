@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.scene.Scene;
-import com.bugfullabs.qube.CubeEntity;
+import com.bugfullabs.qube.game.CubeEntity;
 import android.util.Log;
 
 public class Level{
@@ -13,7 +13,6 @@ public class Level{
 	private int width;
 	private int height;		
 	private int numberOfCubes = 10;		
-	private Scene gameScene;
 	private ArrayList<CubeEntity> cubes;
 
 	private int id;
@@ -83,13 +82,7 @@ public class Level{
 	
 	public void setCube(int x, int y,int color,int index){
 		
-		Log.w("x", Integer.toString(x));
-		Log.w("y", Integer.toString(y));
-		Log.w("color", Integer.toString(color));
-		Log.w("index", Integer.toString(index));
-		
-	
-		final CubeEntity cube = new CubeEntity(x*32, y*32);
+		final CubeEntity cube = new CubeEntity(x*32, y*32, color);
 		cubes.add(index, cube);
 	
 	}

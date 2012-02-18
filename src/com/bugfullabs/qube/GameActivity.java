@@ -6,6 +6,9 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.background.SpriteBackground;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.entity.util.FPSLogger;
+import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;
+import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePackLoader;
+import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.exception.TexturePackParseException;
 import org.anddev.andengine.opengl.font.StrokeFont;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -23,6 +26,7 @@ import com.bugfullabs.qube.level.LevelFileReader;
 import com.bugfullabs.qube.level.LevelSceneFactory;
 import com.bugfullabs.qube.util.AlignedText;
 import com.bugfullabs.qube.util.Button;
+import com.bugfullabs.qube.game.CubeEntity;
 
 
 
@@ -61,38 +65,11 @@ private int stars = 2;
 
 private BitmapTextureAtlas mBigFontTexture;
 
-
-private TextureRegion cubeTexture;
-
 private LevelSceneFactory lSF;
 
+private TexturePack cubesPack;
 
-@Override
-protected Scene onAssetsLoaded() {
-	this.mEngine.registerUpdateHandler(new FPSLogger());
-	
-	lSF = new LevelSceneFactory(level, this);
-	
-	gameScene = lSF.createScene();
-	
-	gameScene.setBackground(new SpriteBackground(new Sprite(0, 0, background)));
-	
-	
-	
-	for (int i = 0; i < level.getNumberOfCubes(); i++){
-		level.getCube(i).setTextureRegion(cubeTexture);
-		level.getCube(i).attachToScene(gameScene);
-	}
-	
-	this.mEngine.registerUpdateHandler(updateTimer = new TimerHandler(0.3f, true, new ITimerCallback(){
-	@Override
-	public void onTimePassed(TimerHandler arg0) {	
-	GameActivity.this.onTimerUpdate();	
-	}		
-	}));
-	
-	return gameScene;
-}
+
 
 @Override
 protected void assetsToLoad() {
@@ -103,7 +80,7 @@ protected void assetsToLoad() {
 	super.setLoadingProgress(20);
 	this.background = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "bg.png", 0, 0);
 	this.buttonTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "button.png", 800, 0);
-	this.cubeTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "cube.png", 0, 480);
+	
 	this.mFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	this.mBigFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	
@@ -114,13 +91,44 @@ protected void assetsToLoad() {
 	
     this.starAtlas = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
     this.starFull = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.starAtlas, this, "star_full.png", 0, 0);
-    this.starBlank = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.starAtlas, this, "star_half_full.png", 128, 0);
-    this.mEngine.getTextureManager().loadTextures(this.mAtlas, this.mFontTexture, this.mBigFontTexture,this.starAtlas);
+    this.starBlank = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.starAtlas, this, "star_blank.png", 128, 0);
+    
+    
+    try {
+		cubesPack = new TexturePackLoader(this, "gfx/game/").loadFromAsset(this, "cubes.xml");
+	} catch (TexturePackParseException e) {
+		e.printStackTrace();
+	}
+    
+    
+    this.mEngine.getTextureManager().loadTextures(this.mAtlas, this.mFontTexture, this.mBigFontTexture,this.starAtlas, this.cubesPack.getTexture());
     this.mEngine.getFontManager().loadFonts(Stroke, bigFont);      
     super.setLoadingProgress(100);
 	
     createScoreScene();
     
+}
+
+
+
+@Override
+protected Scene onAssetsLoaded() {
+	this.mEngine.registerUpdateHandler(new FPSLogger());
+	
+	lSF = new LevelSceneFactory(level, cubesPack);
+	
+	gameScene = lSF.createScene();
+	
+	gameScene.setBackground(new SpriteBackground(new Sprite(0, 0, background)));
+	
+	this.mEngine.registerUpdateHandler(updateTimer = new TimerHandler(0.3f, true, new ITimerCallback(){
+	@Override
+	public void onTimePassed(TimerHandler arg0) {	
+	GameActivity.this.onTimerUpdate();	
+	}		
+	}));
+	
+	return gameScene;
 }
 
 

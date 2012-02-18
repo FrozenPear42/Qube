@@ -17,7 +17,8 @@ import org.anddev.andengine.ui.activity.BaseGameActivity;
 import com.bugfullabs.qube.util.AsyncTaskLoader;
 import com.bugfullabs.qube.util.IAsyncCallback;
  
- 
+import com.bugfullabs.qube.util.ProgressBar; 
+
 /**
  * Written by Tyler Reid of Studio Reveries.
  * 
@@ -33,7 +34,7 @@ public abstract class LoadingActivity extends BaseGameActivity {
 	// Fields
 	// ===========================================================
  
-	ProgressBar Progress;
+	private ProgressBar Progress;
 
 	private TextureRegion background;
 
