@@ -42,6 +42,8 @@ public abstract class LoadingActivity extends BaseGameActivity {
 
 	private Scene scene;
 	
+	protected Camera mCamera;
+	
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -54,11 +56,11 @@ public abstract class LoadingActivity extends BaseGameActivity {
  
 	@Override
 	public Engine onLoadEngine() {
-		Camera camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+		mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 	
-		final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE, new FillResolutionPolicy(), camera);
+		final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE, new FillResolutionPolicy(), mCamera);
         engineOptions.getTouchOptions().setRunOnUpdateThread(true);
-
+        engineOptions.setNeedsMusic(true).setNeedsSound(true);
 		return mEngine = new Engine(engineOptions);
 	
 	}

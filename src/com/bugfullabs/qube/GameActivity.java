@@ -1,5 +1,9 @@
 package com.bugfullabs.qube;
 
+import java.io.IOException;
+
+import org.anddev.andengine.audio.music.Music;
+import org.anddev.andengine.audio.music.MusicFactory;
 import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.entity.scene.Scene;
@@ -18,6 +22,7 @@ import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.VerticalAlign;
 
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
@@ -26,8 +31,12 @@ import com.bugfullabs.qube.level.LevelFileReader;
 import com.bugfullabs.qube.level.LevelSceneFactory;
 import com.bugfullabs.qube.util.AlignedText;
 import com.bugfullabs.qube.util.Button;
+
+import com.bugfullabs.qube.hud.ItemsHUD;
+
 import com.bugfullabs.qube.game.CubeEntity;
 import com.bugfullabs.qube.game.GameValues;
+
 
 
 
@@ -37,7 +46,6 @@ public class GameActivity extends LoadingActivity{
 	
 	private Scene gameScene;
 	private Scene scoreScene;
-	
 	
 	
 	private TimerHandler updateTimer;
@@ -65,6 +73,16 @@ public class GameActivity extends LoadingActivity{
 	private TexturePack levelPack;
 	
 	private int cubesFinished = 0;
+	
+	private Music gameMusic; 
+	
+	private TexturePack levelItemsPack;
+	
+	private ItemsHUD mItems;
+	
+	SharedPreferences settings;
+	SharedPreferences.Editor editor;
+	private static final String SETTINGS_FILE = "Settings";
 	
 	@Override
 	protected void assetsToLoad() {
@@ -94,12 +112,30 @@ public class GameActivity extends LoadingActivity{
 			e.printStackTrace();
 		}
 	    
+	    try {
+			levelItemsPack = new TexturePackLoader(this, "gfx/game/").loadFromAsset(this, level.getLevelTexture()+"_items.xml");
+		} catch (TexturePackParseException e) {
+			e.printStackTrace();
+		}	    
+	    
+	    MusicFactory.setAssetBasePath("music/");
+        try {
+                this.gameMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "game.ogg");
+                this.gameMusic.setLooping(true);
+                this.gameMusic.setVolume(10.0f);
+        } catch (final IOException e) {
+                Log.e("Error", e.toString());
+        }
 	    
 	    this.mEngine.getTextureManager().loadTextures(this.mAtlas, this.mFontTexture, this.mBigFontTexture,this.starAtlas, this.levelPack.getTexture());
 	    this.mEngine.getFontManager().loadFonts(Stroke, bigFont);      
 	    super.setLoadingProgress(100);
 		
 	    createScoreScene();
+	    
+		settings = getSharedPreferences(SETTINGS_FILE, 0);
+		editor = settings.edit();		
+	
 	    
 	}
 	
@@ -109,9 +145,16 @@ public class GameActivity extends LoadingActivity{
 	protected Scene onAssetsLoaded() {
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 		
-
-		
+		if(settings.getBoolean("music", true)){
+		this.gameMusic.play();
+		}
 		gameScene = LevelSceneFactory.createScene(level, levelPack);
+		
+		mItems = new ItemsHUD(this.mCamera, levelItemsPack);
+		//this.mCamera.setHUD(mItems);
+		
+		//TODO: FIX - HUD
+		
 		
 		this.mEngine.registerUpdateHandler(updateTimer = new TimerHandler(0.3f, true, new ITimerCallback(){
 		@Override
