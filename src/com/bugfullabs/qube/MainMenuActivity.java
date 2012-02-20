@@ -110,22 +110,25 @@ public class MainMenuActivity extends LoadingActivity{
 		
 		Buttons[NEWGAME_BUTTON] = new Button(mainScene, 275, 225, 250, 75, getString(R.string.newgame), buttonTexture, Stroke){
 			@Override
-			public void onButtonPressed(){	
+			public boolean onButtonPressed(){	
 			
 			Intent intent = new Intent(MainMenuActivity.this, LevelSelectActivity.class);
 			MainMenuActivity.this.startActivity(intent);
+			return true;
 			}
 		};
 		Buttons[OPTIONS_BUTTON] = new Button(mainScene, 275, 300, 250, 75, getString(R.string.options), buttonTexture, Stroke){
 		@Override
-		public void onButtonPressed(){	
+		public boolean onButtonPressed(){	
 		MainMenuActivity.this.mEngine.setScene(optionsScene);
+		return true;
 		}
 	};
 		Buttons[EXIT_BUTTON] = new Button(mainScene, 275, 375, 250, 75, getString(R.string.exit), buttonTexture, Stroke){
 		@Override
-		public void onButtonPressed(){	
+		public boolean onButtonPressed(){	
 			MainMenuActivity.this.finish();
+			return true;
 		}
 	};
 		
@@ -138,7 +141,7 @@ public class MainMenuActivity extends LoadingActivity{
 		
 		Buttons[MUSIC_BUTTON] = new Button(optionsScene, 275, 225, 250, 75, String.format(getString(R.string.music), getString(R.string.yes)), buttonTexture, Stroke){
 			@Override
-			public void onButtonPressed(){
+			public boolean onButtonPressed(){
 			
 				music = !music;
 				
@@ -149,11 +152,12 @@ public class MainMenuActivity extends LoadingActivity{
 				}else{
 				this.setText(String.format(getString(R.string.music), getString(R.string.no)));
 				}
+				return true;
 				}
 		};
 		Buttons[SOUND_BUTTON] = new Button(optionsScene, 275, 300, 250, 75, String.format(getString(R.string.sound), getString(R.string.yes)), buttonTexture, Stroke){
 		@Override
-		public void onButtonPressed(){
+		public boolean onButtonPressed(){
 		
 			sound = !sound;
 			
@@ -165,6 +169,7 @@ public class MainMenuActivity extends LoadingActivity{
 			}else{
 			this.setText(String.format(getString(R.string.sound), getString(R.string.no)));
 			}
+			return true;
 			}
 	};
 		

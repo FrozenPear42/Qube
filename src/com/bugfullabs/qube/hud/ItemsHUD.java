@@ -11,7 +11,7 @@ import com.bugfullabs.qube.util.SpriteButton;
 public class ItemsHUD extends HUD{
 	
 	public static final int BUTTON_NUMBER = 5;
-	public static final int BUTTON_PADDING = 32;
+	public static final int BUTTON_PADDING = 8;
 
 	private SpriteButton mButtons[];
 	
@@ -24,12 +24,11 @@ public class ItemsHUD extends HUD{
 
 		this.setBackgroundEnabled(false);
 		
-		
 		for(int i = 0; i < ItemsHUD.BUTTON_NUMBER; i++){
 		
 			final int id = i;
 			
-			mButtons[i] = new SpriteButton(this, 32+(i*ItemsHUD.BUTTON_PADDING+64), 448, HUDTexturePack.getTexturePackTextureRegionLibrary().get(i+1), HUDTexturePack.getTexturePackTextureRegionLibrary().get(0)){
+			mButtons[i] = new SpriteButton(this, 730, 32+i*(ItemsHUD.BUTTON_PADDING+64), HUDTexturePack.getTexturePackTextureRegionLibrary().get(i+1), HUDTexturePack.getTexturePackTextureRegionLibrary().get(0)){
 				@Override
 				public void onButtonPressed(){
 				
@@ -42,9 +41,15 @@ public class ItemsHUD extends HUD{
 		
 	}
 
-	protected void onItemSelected(int i) {
-		
-		
+	public void show(){
+		this.setVisible(true);
+	}
+	
+	public void hide(){
+		this.setVisible(false);
+	}
+	
+	protected void onItemSelected(int i) {	
 		
 	}
 	

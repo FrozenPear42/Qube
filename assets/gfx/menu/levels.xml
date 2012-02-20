@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<texture version="1" file="levels.png" type="bitmap" width="512" height="1024" pixelformat="RGBA_8888" minfilter="linear" magfilter="linear" wrapt="clamp" wraps="clamp" premultiplyalpha="false">
+    <!-- Created with TexturePacker http://texturepacker.com -->
+    <!--  -->
+    <textureregion id="0" src="level0.png" x="2" y="260" width="256" height="256" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="256" srcheight="256"/>
+    <textureregion id="1" src="level1.png" x="2" y="2" width="256" height="256" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="256" srcheight="256"/>
+    <textureregion id="2" src="level2.png" x="2" y="518" width="256" height="256" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="256" srcheight="256"/>
+</texture>

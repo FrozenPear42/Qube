@@ -278,6 +278,10 @@ public class GameActivity extends LoadingActivity{
 		
 		this.stars = 0;
 		
+		this.cubesFinished = 0;
+		
+		this.mItems.show();
+		
 		LevelFileReader lvReader = new LevelFileReader(this, "level_"+Integer.toString(level.getLevelpackId())+"_"+Integer.toString(level.getLevelId()+1));
 		level = lvReader.getLevel();
 		
@@ -292,6 +296,8 @@ public class GameActivity extends LoadingActivity{
 		
 		this.stars = 0;
 		this.cubesFinished = 0;
+		
+		this.mItems.show();
 		
 		LevelFileReader lvReader = new LevelFileReader(this, "level_"+Integer.toString(level.getLevelpackId())+"_"+Integer.toString(level.getLevelId()));
 		level = lvReader.getLevel();
@@ -314,20 +320,23 @@ public class GameActivity extends LoadingActivity{
 		
 		new Button(scoreScene, 150, 300, 250, 75, getString(R.string.nextlevel), buttonTexture, Stroke){
 			@Override
-			public void onButtonPressed(){
+			public boolean onButtonPressed(){
 				nextLevel();
+				return true;
 			}
 		};
 		new Button(scoreScene, 400, 300, 250, 75, getString(R.string.reset), buttonTexture, Stroke){
 			@Override
-			public void onButtonPressed(){
+			public boolean onButtonPressed(){
 				resetLevel();
+				return true;
 			}
 		};
 		new Button(scoreScene, 275, 375, 250, 75, getString(R.string.mainmenu), buttonTexture, Stroke){
 			@Override
-			public void onButtonPressed(){
+			public boolean onButtonPressed(){
 				GameActivity.this.finish();
+				return true;
 			}
 		};
 	
@@ -335,6 +344,8 @@ public class GameActivity extends LoadingActivity{
 	
 	private void loadScoreScene(){
 		this.mEngine.unregisterUpdateHandler(updateTimer);
+		
+		this.mItems.hide();
 		
 		for(int i = 1; i <= stars; i++){
 		final Sprite star = new Sprite(80+(i*128), 175, starFull);	

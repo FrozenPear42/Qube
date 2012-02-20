@@ -23,9 +23,9 @@ public class Button{
 			@Override
 	        public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
 	        if(pSceneTouchEvent.isActionDown() == true){
-			onButtonPressed();
+			return onButtonPressed();
 	        }
-			return true;
+			return false;
 	    }
 		};
 		bgButton.setWidth(width);
@@ -49,8 +49,17 @@ public class Button{
 		bgButton.setPosition(x, y);
 	}
 	
-	public void onButtonPressed(){
+	public boolean onButtonPressed(){
+		return false;
+	}
+
+
+
+
+
+	public int getWidth() {
 		
+		return (int) this.bgButton.getWidth();
 	}
 	
 }

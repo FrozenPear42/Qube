@@ -1,8 +1,5 @@
 package com.bugfullabs.qube;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
@@ -13,6 +10,9 @@ import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.scene.background.SpriteBackground;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.entity.util.FPSLogger;
+import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;
+import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePackLoader;
+import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.exception.TexturePackParseException;
 import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.input.touch.detector.ClickDetector;
 import org.anddev.andengine.input.touch.detector.ClickDetector.IClickDetectorListener;
@@ -28,6 +28,7 @@ import org.anddev.andengine.ui.activity.BaseGameActivity;
 import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.VerticalAlign;
 import com.bugfullabs.qube.util.AlignedText;
+import com.bugfullabs.qube.util.Button;
 import com.bugfullabs.qube.level.Level;
 import com.bugfullabs.qube.level.LevelFileReader;
 
@@ -36,6 +37,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 
@@ -86,58 +88,49 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         private float mCurrentX = 0;
         private int iItemClicked = -1;
         
-        private List<TextureRegion> columns = new ArrayList<TextureRegion>();
-
-        
-        private BitmapTextureAtlas mBackground;
-        private TextureRegion background;
-        
-        private BitmapTextureAtlas mBackground_0;
-        private TextureRegion background_0;
+        private BitmapTextureAtlas mAtlas; 
         private TextureRegion Item;
         
+        private TexturePack mBackgrounds;
         
-        
+        private TexturePack mLevels; 
+           
         private LevelFileReader LevelReader;
-		private BitmapTextureAtlas mBackground_1;
-		private TextureRegion background_1;
         
+		private TextureRegion mBackground;
         
+		public static final int NUMBER_OF_LEVELPACKS = 3;
+		
         @Override
         public void onLoadResources() {
                 // Paths
+        	
                 BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
  
-                this.mBackground = new BitmapTextureAtlas(1024, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        		this.background = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBackground, this, "bg.png", 0, 0);
-                this.Item = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBackground, this, "levelitem_0.png", 800, 0);
-                
-                this.mBackground_0 = new BitmapTextureAtlas(1024, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        		this.background_0 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBackground_0, this, "bg_0.png", 0, 0);
-                
-        		this.mBackground_1 = new BitmapTextureAtlas(1024, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        		this.background_1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBackground_1, this, "bg_0.png", 0, 0);
-                
+                this.mAtlas = new BitmapTextureAtlas(1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+                this.mBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "bg.png", 0, 0);
+        		this.Item = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "levelitem_0.png", 800, 0);
         		
+        		  try {
+        				this.mBackgrounds = new TexturePackLoader(this, "gfx/menu/").loadFromAsset(this, "backgrounds.xml");
+        			} catch (TexturePackParseException e) {
+        				e.printStackTrace();
+        			}
+        		
+        		  try {
+        				this.mLevels = new TexturePackLoader(this, "gfx/menu/").loadFromAsset(this, "levels.xml");
+        			} catch (TexturePackParseException e) {
+        				e.printStackTrace();
+        			} 		  
+        		  
         		
                 // Font
                 this.mFontTexture = new BitmapTextureAtlas(256, 256);
                 
                 Typeface typeface = Typeface.createFromAsset(getAssets(), "font/FOO.ttf");
                 this.mFont = new StrokeFont(mFontTexture, typeface, FONT_SIZE, true, Color.WHITE, 2, Color.BLACK);
-                this.mEngine.getTextureManager().loadTextures(this.mFontTexture, this.mBackground, this.mBackground_0);
-                this.mEngine.getFontManager().loadFonts(this.mFont);
-                
-                //Images for the menu
-                for (int i = 0; i < MENUITEMS; i++) {				
-                	BitmapTextureAtlas mMenuBitmapTextureAtlas = new BitmapTextureAtlas(256,256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-            		TextureRegion mMenuTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mMenuBitmapTextureAtlas, this, "level"+i+".png", 0, 0);
-            		
-                	this.mEngine.getTextureManager().loadTexture(mMenuBitmapTextureAtlas);
-                	columns.add(mMenuTextureRegion);	
-                }
-                
-                
+                this.mEngine.getTextureManager().loadTextures(this.mFontTexture, this.mAtlas, this.mBackgrounds.getTexture(), this.mLevels.getTexture());
+                this.mEngine.getFontManager().loadFonts(this.mFont);            
                 
         }
  
@@ -157,7 +150,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
                 this.mEngine.registerUpdateHandler(new FPSLogger());
  
                 this.mScene = new Scene();
-                this.mScene.setBackground(new SpriteBackground(new Sprite(0 ,0 , this.background)));
+                this.mScene.setBackground(new SpriteBackground(new Sprite(0 ,0 , this.mBackground)));
                
                 this.mScrollDetector = new SurfaceScrollDetector(this);
                 this.mClickDetector = new ClickDetector(this);
@@ -216,7 +209,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         private void CreateMenuBoxes() {
         	
              int spriteX = PADDING;
-        	 int spriteY = ((CAMERA_HEIGHT/2 - columns.get(0).getHeight()/2)+PADDING);
+        	 int spriteY = ((CAMERA_HEIGHT/2 - mLevels.getTexturePackTextureRegionLibrary().get(0).getHeight()/2)+PADDING);
         	 
         	 int strings[] = new int[3];
         	 
@@ -228,12 +221,12 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         	 //current item counter
              int iItem = 1;
 
-        	 for (int x = 0; x < columns.size(); x++) {
+        	 for (int x = 0; x < LevelSelectActivity.NUMBER_OF_LEVELPACKS; x++) {
         		 
         		 //On Touch, save the clicked item in case it's a click and not a scroll.
                  final int itemToLoad = iItem;
-        		 
-        		 Sprite sprite = new Sprite(spriteX,spriteY,columns.get(x)){
+        		 /*
+        		 Sprite sprite = new Sprite(spriteX,spriteY, mLevels.getTexturePackTextureRegionLibrary().get(x)){
         			 
         			 public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
                          iItemClicked = itemToLoad;
@@ -248,8 +241,20 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         		 this.mScene.attachChild(text);        		 
         		 this.mScene.registerTouchArea(sprite);        		 
 
+        		 */
+        		 
+        		 Button button = new Button(mScene, spriteX, spriteY, 256, 256, iItem+"."+getString(strings[x]), mLevels.getTexturePackTextureRegionLibrary().get(x), mFont){
+        			 
+        			 @Override 
+        			 public boolean onButtonPressed(){
+        				 iItemClicked = itemToLoad;
+        				 return false;
+        			 }
+        			 
+        		 };
+        		 
      		 
-        		 spriteX += 20 + PADDING+sprite.getWidth();
+        		 spriteX += 20 + PADDING+button.getWidth();
         		 iItem++;
         		 
 			}
@@ -272,8 +277,10 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
                                 @Override
                                 public void run() {
                                 		
-                                		setLevelSelectGrid(background_0, Item, iLevel);
-                                	
+                                		setLevelSelectGrid(LevelSelectActivity.this.mBackgrounds.getTexturePackTextureRegionLibrary().get(iLevel-1), Item, iLevel);  
+                                		
+                                		System.gc();
+                                		
                                         Toast.makeText(LevelSelectActivity.this, "Load Item " + String.valueOf(iLevel), Toast.LENGTH_SHORT).show();
                                         iItemClicked = -1;
                                 }
@@ -350,6 +357,8 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
     	  Log.i("TOUCHED", Integer.toString(id+1));
     	  
       }
+      
+
        
         
         
