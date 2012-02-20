@@ -25,9 +25,6 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
-import org.anddev.andengine.util.HorizontalAlign;
-import org.anddev.andengine.util.VerticalAlign;
-import com.bugfullabs.qube.util.AlignedText;
 import com.bugfullabs.qube.util.Button;
 import com.bugfullabs.qube.level.Level;
 import com.bugfullabs.qube.level.LevelFileReader;
@@ -37,8 +34,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.widget.Toast;
 
 
 /**
@@ -107,7 +102,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         	
                 BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
  
-                this.mAtlas = new BitmapTextureAtlas(1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+                this.mAtlas = new BitmapTextureAtlas(1024, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
                 this.mBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "bg.png", 0, 0);
         		this.Item = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "levelitem_0.png", 800, 0);
         		
@@ -125,10 +120,11 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         		  
         		
                 // Font
-                this.mFontTexture = new BitmapTextureAtlas(256, 256);
+                this.mFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
                 
                 Typeface typeface = Typeface.createFromAsset(getAssets(), "font/FOO.ttf");
                 this.mFont = new StrokeFont(mFontTexture, typeface, FONT_SIZE, true, Color.WHITE, 2, Color.BLACK);
+                
                 this.mEngine.getTextureManager().loadTextures(this.mFontTexture, this.mAtlas, this.mBackgrounds.getTexture(), this.mLevels.getTexture());
                 this.mEngine.getFontManager().loadFonts(this.mFont);            
                 
@@ -225,24 +221,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         		 
         		 //On Touch, save the clicked item in case it's a click and not a scroll.
                  final int itemToLoad = iItem;
-        		 /*
-        		 Sprite sprite = new Sprite(spriteX,spriteY, mLevels.getTexturePackTextureRegionLibrary().get(x)){
-        			 
-        			 public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-                         iItemClicked = itemToLoad;
-                         return false;
-        			 }        			 
-        		 };        		 
-        		
-        		 final AlignedText text = new AlignedText(spriteX, spriteY, mFont, iItem+"."+getString(strings[x]), HorizontalAlign.CENTER, VerticalAlign.CENTER, columns.get(0).getWidth(), columns.get(0).getHeight());
-        		 
-        		 
-        		 this.mScene.attachChild(sprite);        		 
-        		 this.mScene.attachChild(text);        		 
-        		 this.mScene.registerTouchArea(sprite);        		 
 
-        		 */
-        		 
         		 Button button = new Button(mScene, spriteX, spriteY, 256, 256, iItem+"."+getString(strings[x]), mLevels.getTexturePackTextureRegionLibrary().get(x), mFont){
         			 
         			 @Override 
@@ -279,9 +258,6 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
                                 		
                                 		setLevelSelectGrid(LevelSelectActivity.this.mBackgrounds.getTexturePackTextureRegionLibrary().get(iLevel-1), Item, iLevel);  
                                 		
-                                		System.gc();
-                                		
-                                        Toast.makeText(LevelSelectActivity.this, "Load Item " + String.valueOf(iLevel), Toast.LENGTH_SHORT).show();
                                         iItemClicked = -1;
                                 }
                         });
@@ -305,34 +281,24 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
     		  
   			for(int k = 0; k < NUMBER_OF_ITEMS_IN_ROW; k++){
   				
-  				final int id = i;
+  			final int id = i;
   					  
-    		  
-      		  final Sprite sprite = new Sprite(MARGIN_X + (k * X_OFFSET) - (Item.getWidth()/2), MARGIN_Y + (j * Y_OFFSET)- (Item.getHeight()/2), Item){
+      		  new Button(gridScene, MARGIN_X + (k * X_OFFSET) - (Item.getWidth()/2), MARGIN_Y + (j * Y_OFFSET)- (Item.getHeight()/2),Item.getWidth(), Item.getWidth(), Integer.toString(i+1), Item, mFont ){
+      			  
       			  @Override
-      			  public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY){
-  					
-      				  if(pSceneTouchEvent.getAction() == TouchEvent.ACTION_DOWN){
-      					  
-      					LevelSelectActivity.this.onLevelSelected(id, iLevel);
-      					  
-      				  }
-      				  return true;
-      				  
+      			  public boolean onButtonPressed(){
+      				LevelSelectActivity.this.onLevelSelected(id, iLevel);
+      				return true;
       			  }
       		  };
       		  
-      		  final AlignedText text = new AlignedText(MARGIN_X + (k * X_OFFSET) - (Item.getWidth()/2), MARGIN_Y + (j * Y_OFFSET)- (Item.getHeight()/2), mFont, Integer.toString(i+1), HorizontalAlign.CENTER, VerticalAlign.CENTER, sprite.getWidth(), sprite.getHeight());
-      		  gridScene.attachChild(sprite);
-      		  gridScene.attachChild(text);	
-      		  gridScene.registerTouchArea(sprite);
+      		  
       		  i++;
   			}
   		}
     	  
     	  gridScene.setTouchAreaBindingEnabled(true);
     	  
-    	  this.mCamera.reset();
     	  this.mCamera.offsetCenter(-this.mCurrentX, 0);
     	  
     	  this.mEngine.setScene(gridScene);

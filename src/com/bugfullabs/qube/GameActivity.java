@@ -248,6 +248,9 @@ public class GameActivity extends LoadingActivity{
 
 			//TODO: FIX - STAR HAS TO DISAPEAR
 			stars++;
+			
+			mItems.setStars(stars);
+			
 			break;			
 		
 		
@@ -277,7 +280,7 @@ public class GameActivity extends LoadingActivity{
 	private void nextLevel(){
 		
 		this.stars = 0;
-		
+		this.mItems.setStars(0);
 		this.cubesFinished = 0;
 		
 		this.mItems.show();
@@ -295,6 +298,7 @@ public class GameActivity extends LoadingActivity{
 	private void resetLevel(){
 		
 		this.stars = 0;
+		this.mItems.setStars(0);
 		this.cubesFinished = 0;
 		
 		this.mItems.show();

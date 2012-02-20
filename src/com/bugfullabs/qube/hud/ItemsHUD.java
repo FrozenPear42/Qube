@@ -2,6 +2,7 @@ package com.bugfullabs.qube.hud;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.camera.hud.HUD;
+import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;
 
 import com.bugfullabs.qube.util.SpriteButton;
@@ -13,13 +14,19 @@ public class ItemsHUD extends HUD{
 	public static final int BUTTON_NUMBER = 5;
 	public static final int BUTTON_PADDING = 8;
 
-	private SpriteButton mButtons[];
+	public static final int ID_STAR = 1;
 	
-	public ItemsHUD(Camera pCamera, TexturePack HUDTexturePack){
+	private SpriteButton mButtons[];
+	private int mStars = 0;
+	private TexturePack HUDTexturePack;
+	
+	public ItemsHUD(Camera pCamera, TexturePack pTexturePack){
 		
 		super();
 		super.setCamera(pCamera);
 	
+		HUDTexturePack = pTexturePack;
+		
 		mButtons = new SpriteButton[ItemsHUD.BUTTON_NUMBER];
 
 		this.setBackgroundEnabled(false);
@@ -48,6 +55,19 @@ public class ItemsHUD extends HUD{
 	public void hide(){
 		this.setVisible(false);
 	}
+	
+	public void setStars(int number){
+		
+		if(number > mStars){
+		
+		for(int i = mStars; i < number; i++){
+			this.attachChild(new Sprite(i*32,0, HUDTexturePack.getTexturePackTextureRegionLibrary().get(ID_STAR)));
+			
+		}
+		}
+		
+	}
+	
 	
 	protected void onItemSelected(int i) {	
 		
