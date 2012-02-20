@@ -2,7 +2,6 @@ package com.bugfullabs.qube.hud;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.camera.hud.HUD;
-import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;
 
 import com.bugfullabs.qube.util.SpriteButton;
@@ -21,32 +20,27 @@ public class ItemsHUD extends HUD{
 		super();
 		super.setCamera(pCamera);
 	
-		//mButtons = new SpriteButton[ItemsHUD.BUTTON_NUMBER];
+		mButtons = new SpriteButton[ItemsHUD.BUTTON_NUMBER];
 
 		this.setBackgroundEnabled(false);
 		
-		this.attachChild(new Sprite(0,0,HUDTexturePack.getTexturePackTextureRegionLibrary().get(1)));
-	}
-	/*	for(int i = 0; i < ItemsHUD.BUTTON_NUMBER; i++){
 		
-			//final int id = i;
+		for(int i = 0; i < ItemsHUD.BUTTON_NUMBER; i++){
+		
+			final int id = i;
 			
-			//mButtons[i] = 
-			//		new SpriteButton(this, 32+(i*ItemsHUD.BUTTON_PADDING+64), 448, HUDTexturePack.getTexturePackTextureRegionLibrary().get(i+1), HUDTexturePack.getTexturePackTextureRegionLibrary().get(0));
-			
-			
-			//{
-				//@Override
-				//public void onButtonPressed(){
+			mButtons[i] = new SpriteButton(this, 32+(i*ItemsHUD.BUTTON_PADDING+64), 448, HUDTexturePack.getTexturePackTextureRegionLibrary().get(i+1), HUDTexturePack.getTexturePackTextureRegionLibrary().get(0)){
+				@Override
+				public void onButtonPressed(){
 				
-				//	ItemsHUD.this.onItemSelected(id);
+					ItemsHUD.this.onItemSelected(id);
 					
-				//}
-			//};
+				}
+			};
 			
 		}
 		
-	}*/
+	}
 
 	protected void onItemSelected(int i) {
 		

@@ -127,7 +127,7 @@ public class GameActivity extends LoadingActivity{
                 Log.e("Error", e.toString());
         }
 	    
-	    this.mEngine.getTextureManager().loadTextures(this.mAtlas, this.mFontTexture, this.mBigFontTexture,this.starAtlas, this.levelPack.getTexture());
+	    this.mEngine.getTextureManager().loadTextures(this.mAtlas, this.mFontTexture, this.mBigFontTexture,this.starAtlas, this.levelPack.getTexture(), this.levelItemsPack.getTexture());
 	    this.mEngine.getFontManager().loadFonts(Stroke, bigFont);      
 	    super.setLoadingProgress(100);
 		
@@ -151,10 +151,7 @@ public class GameActivity extends LoadingActivity{
 		gameScene = LevelSceneFactory.createScene(level, levelPack);
 		
 		mItems = new ItemsHUD(this.mCamera, levelItemsPack);
-		//this.mCamera.setHUD(mItems);
-		
-		//TODO: FIX - HUD
-		
+		this.mCamera.setHUD(mItems);
 		
 		this.mEngine.registerUpdateHandler(updateTimer = new TimerHandler(0.3f, true, new ITimerCallback(){
 		@Override
