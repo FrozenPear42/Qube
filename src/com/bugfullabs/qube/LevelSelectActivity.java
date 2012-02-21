@@ -5,6 +5,7 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.anddev.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
+import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.scene.background.SpriteBackground;
@@ -65,10 +66,9 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
     	public static final float MARGIN_Y = CAMERA_HEIGHT/2 - (((Y_OFFSET)*((NUMBER_OF_ITEMS/NUMBER_OF_ITEMS_IN_ROW)/2)));
     	
         
+        private Camera mCamera;
         
         private Scene mScene;
-        private Camera mCamera;
- 
         private Scene gridScene;
         
         private StrokeFont mFont; 
@@ -85,14 +85,12 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         
         private BitmapTextureAtlas mAtlas; 
         private TextureRegion Item;
-        
+		private TextureRegion mBackground;
+		
         private TexturePack mBackgrounds;
-        
         private TexturePack mLevels; 
            
         private LevelFileReader LevelReader;
-        
-		private TextureRegion mBackground;
         
 		public static final int NUMBER_OF_LEVELPACKS = 3;
 		
@@ -104,29 +102,23 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
  
                 this.mAtlas = new BitmapTextureAtlas(1024, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
                 this.mBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "bg.png", 0, 0);
-        		this.Item = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "levelitem_0.png", 800, 0);
+        		this.Item = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "levelitem.png", 800, 0);
         		
-        		  try {
-        				this.mBackgrounds = new TexturePackLoader(this, "gfx/menu/").loadFromAsset(this, "backgrounds.xml");
-        			} catch (TexturePackParseException e) {
+        		try {
+        			
+        			this.mBackgrounds = new TexturePackLoader(this, "gfx/menu/").loadFromAsset(this, "backgrounds.xml");
+    				this.mLevels = new TexturePackLoader(this, "gfx/menu/").loadFromAsset(this, "levels.xml");
+        		
+        		  } catch (TexturePackParseException e) {
         				e.printStackTrace();
-        			}
+        		}        		  
         		
-        		  try {
-        				this.mLevels = new TexturePackLoader(this, "gfx/menu/").loadFromAsset(this, "levels.xml");
-        			} catch (TexturePackParseException e) {
-        				e.printStackTrace();
-        			} 		  
-        		  
-        		
-                // Font
                 this.mFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-                
                 Typeface typeface = Typeface.createFromAsset(getAssets(), "font/FOO.ttf");
                 this.mFont = new StrokeFont(mFontTexture, typeface, FONT_SIZE, true, Color.WHITE, 2, Color.BLACK);
                 
                 this.mEngine.getTextureManager().loadTextures(this.mFontTexture, this.mAtlas, this.mBackgrounds.getTexture(), this.mLevels.getTexture());
-                this.mEngine.getFontManager().loadFonts(this.mFont);            
+                this.mEngine.getFontManager().loadFont(this.mFont);            
                 
         }
  
@@ -134,11 +126,9 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         public Engine onLoadEngine() {
                 this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
  
-                final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE, new FillResolutionPolicy(), this.mCamera);
+                final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera);
                 engineOptions.getTouchOptions().setRunOnUpdateThread(true);
- 
-                final Engine engine = new Engine(engineOptions);
-                return engine;
+                return new Engine(engineOptions);
         }
  
         @Override
@@ -146,7 +136,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
                 this.mEngine.registerUpdateHandler(new FPSLogger());
  
                 this.mScene = new Scene();
-                this.mScene.setBackground(new SpriteBackground(new Sprite(0 ,0 , this.mBackground)));
+                this.mScene.setBackground(new SpriteBackground(new Sprite(0, 0, this.mBackground)));
                
                 this.mScrollDetector = new SurfaceScrollDetector(this);
                 this.mClickDetector = new ClickDetector(this);
@@ -186,7 +176,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
                
                //Because Camera can have negativ X values, so set to 0
             	if(this.mCamera.getMinX()<0){
-            		this.mCamera.offsetCenter(0,0 );
+            		this.mCamera.offsetCenter(0, 0);
             		mCurrentX=0;
             	}
             	
@@ -290,9 +280,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
       				LevelSelectActivity.this.onLevelSelected(id, iLevel);
       				return true;
       			  }
-      		  };
-      		  
-      		  
+      		  };  
       		  i++;
   			}
   		}

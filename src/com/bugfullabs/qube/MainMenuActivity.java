@@ -150,7 +150,7 @@ public class MainMenuActivity extends LoadingActivity{
 		}
 	};
 		
-		new SpriteButton(mainScene, 715, 405, OpenFeintTexture){
+		new SpriteButton(mainScene, 715, 395, OpenFeintTexture){
 		@Override
 		public void onButtonPressed(){
 			OpenFeint.login();

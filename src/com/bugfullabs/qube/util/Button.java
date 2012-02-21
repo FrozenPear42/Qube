@@ -53,7 +53,11 @@ public class Button{
 		return false;
 	}
 
-
+	
+	public int getHeight() {
+		
+		return (int) this.bgButton.getHeight();
+	}
 
 
 
