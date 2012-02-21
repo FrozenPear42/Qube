@@ -1,2 +1,4 @@
 bin
 .gitignore
+Thumbs.db
+PrivateValues.java

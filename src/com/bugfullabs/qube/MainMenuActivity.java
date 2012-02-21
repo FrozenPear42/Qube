@@ -10,7 +10,11 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextur
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
 import com.bugfullabs.qube.util.Button;
-
+import com.bugfullabs.qube.util.SpriteButton;
+import com.openfeint.api.OpenFeint;
+import com.openfeint.api.OpenFeintDelegate;
+import com.openfeint.api.OpenFeintSettings;
+import com.openfeint.api.ui.Dashboard;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -26,6 +30,7 @@ public class MainMenuActivity extends LoadingActivity{
 	private BitmapTextureAtlas mAtlas;
 	private TextureRegion background;
 	private TextureRegion buttonTexture;
+	private TextureRegion OpenFeintTexture;
 	private BitmapTextureAtlas mFontTexture;
 	private StrokeFont Stroke;
 	
@@ -44,6 +49,17 @@ public class MainMenuActivity extends LoadingActivity{
 	
 	private boolean sound = false;
 	private boolean music = false;
+	
+	
+	@Override
+	public void onLoadComplete() {
+		
+	    OpenFeintSettings OFSettings = new OpenFeintSettings(PrivateValues.OFName, PrivateValues.OFKey, PrivateValues.OFSecret, PrivateValues.OFId);
+	    OpenFeint.initializeWithoutLoggingIn(this, OFSettings, new OpenFeintDelegate(){});	
+	}
+	
+	
+	
 	
 	@Override
 	protected Scene onAssetsLoaded() {
@@ -72,12 +88,14 @@ public class MainMenuActivity extends LoadingActivity{
 
 	@Override
 	protected void assetsToLoad() {
+		
 		super.setLoadingProgress(10);
-		this.mAtlas = new BitmapTextureAtlas(1024, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		this.mAtlas = new BitmapTextureAtlas(1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
 		super.setLoadingProgress(20);
 		this.background = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "bg.png", 0, 0);
         this.buttonTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "button.png", 800, 0); 
+        this.OpenFeintTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "OFLogo.png", 0, 480); 
         super.setLoadingProgress(60);
         this.mFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         Typeface typeface =  Typeface.createFromAsset(getAssets(), "font/FOO.ttf");
@@ -132,6 +150,14 @@ public class MainMenuActivity extends LoadingActivity{
 		}
 	};
 		
+		new SpriteButton(mainScene, 715, 405, OpenFeintTexture){
+		@Override
+		public void onButtonPressed(){
+			OpenFeint.login();
+			Dashboard.open();
+		}
+	};
+	
 	}
 	private void initOptionsMenu()
 	{
@@ -174,7 +200,8 @@ public class MainMenuActivity extends LoadingActivity{
 	};
 		
 		Buttons[RESET_BUTTON] = new Button(optionsScene, 275, 375, 250, 75, getString(R.string.reset), buttonTexture, Stroke);
-	}	
+	}
+	
 	
 	
 }

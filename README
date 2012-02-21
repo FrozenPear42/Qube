@@ -1,2 +1,5 @@
 It will be a simple android game based on AndEngine.
 Currently it is under development.
+
+
+Class PrivateValues is missing, because it contains private data like OpenFeint values.

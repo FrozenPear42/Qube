@@ -28,10 +28,24 @@ public class SpriteButton{
 			
 		scene.attachChild(mBgButton);
 		scene.attachChild(mSpriteButton);
+		scene.registerTouchArea(mBgButton);
 		}
 	
 	
-	
+	public SpriteButton(Scene scene, final float x, final float y, final TextureRegion pSprite){	
+		
+		this.mBgButton = new Sprite(x, y, pSprite){
+		@Override
+        public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+        if(pSceneTouchEvent.isActionDown() == true){
+		onButtonPressed();
+        }
+		return true;
+    }
+	};
+	scene.attachChild(mBgButton);
+	scene.registerTouchArea(mBgButton);
+	}
 	
 	
 	public void setSprite(Sprite pSprite){
