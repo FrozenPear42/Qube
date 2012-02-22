@@ -97,13 +97,14 @@ public class MainMenuActivity extends LoadingActivity{
         this.buttonTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "button.png", 800, 0); 
         this.OpenFeintTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "OFLogo.png", 0, 480); 
         super.setLoadingProgress(60);
+        
         this.mFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         Typeface typeface =  Typeface.createFromAsset(getAssets(), "font/FOO.ttf");
         Stroke = new StrokeFont(mFontTexture, typeface, 26, true, Color.WHITE, 2, Color.BLACK);
+        
         super.setLoadingProgress(90);      
         this.mEngine.getTextureManager().loadTextures(this.mAtlas, this.mFontTexture);
         this.mEngine.getFontManager().loadFonts(Stroke);      
-        
         super.setLoadingProgress(100);
 	}
 	
@@ -199,7 +200,15 @@ public class MainMenuActivity extends LoadingActivity{
 			}
 	};
 		
-		Buttons[RESET_BUTTON] = new Button(optionsScene, 275, 375, 250, 75, getString(R.string.reset), buttonTexture, Stroke);
+		Buttons[RESET_BUTTON] = new Button(optionsScene, 275, 375, 250, 75, getString(R.string.reset), buttonTexture, Stroke){
+		@Override
+		public boolean onButtonPressed(){
+			this.setText("asd");
+			return true;
+		}
+		
+		};
+		
 	}
 	
 	

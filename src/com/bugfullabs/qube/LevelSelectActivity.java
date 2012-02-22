@@ -4,7 +4,6 @@ import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
-import org.anddev.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
@@ -40,7 +39,8 @@ import android.util.Log;
 /**
  * 
  * @author Bugful Labs
- * @email admin@bugfullabs.pl
+ * @author Grushenko
+ * @email  admin@bugfullabs.pl
  *
  */
 public class LevelSelectActivity extends BaseGameActivity implements IScrollDetectorListener, IOnSceneTouchListener, IClickDetectorListener {
@@ -100,7 +100,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         	
                 BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
  
-                this.mAtlas = new BitmapTextureAtlas(1024, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+                this.mAtlas = new BitmapTextureAtlas(1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
                 this.mBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "bg.png", 0, 0);
         		this.Item = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAtlas, this, "levelitem.png", 800, 0);
         		
@@ -141,6 +141,8 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
                 this.mScrollDetector = new SurfaceScrollDetector(this);
                 this.mClickDetector = new ClickDetector(this);
  
+       
+                
                 this.mScene.setOnSceneTouchListener(this);
                 this.mScene.setTouchAreaBindingEnabled(true);
                 this.mScene.setOnSceneTouchListenerBindingEnabled(true);
@@ -218,11 +220,9 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         			 public boolean onButtonPressed(){
         				 iItemClicked = itemToLoad;
         				 return false;
-        			 }
-        			 
+        			 } 
         		 };
-        		 
-     		 
+
         		 spriteX += 20 + PADDING+button.getWidth();
         		 iItem++;
         		 
@@ -262,8 +262,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
     	  gridScene = new Scene();
     	  
     	  gridScene.setBackground(new SpriteBackground(new Sprite(0, 0, bg)));
-    	  
-    	  
+  
     	  
     	  int i = 0;
     	  
@@ -304,10 +303,8 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
     	  
     	  GameActivity.level = level;
     	  
-    	  
     	  this.startActivity(new Intent(this, GameActivity.class));
-    	  this.finish();
-    	  
+    	  System.exit(0);
     	  Log.i("TOUCHED", Integer.toString(id+1));
     	  
       }

@@ -14,8 +14,13 @@ public class Button{
 	private Sprite bgButton;
 	private AlignedText textButton;
 	
+	private float mX;
+	private float mY;
 	
 	public Button(final Scene scene, final float x, final float y, final float width, final float height, final String text, final TextureRegion tx, final Font font){	
+		
+			mX = x;
+			mY = y;
 		
 			textButton = new AlignedText(x, y, font, text, HorizontalAlign.CENTER, VerticalAlign.CENTER, width, height);	
 			
@@ -29,7 +34,8 @@ public class Button{
 	    }
 		};
 		bgButton.setWidth(width);
-		bgButton.setHeight(height);	
+		bgButton.setHeight(height);
+		
 	    scene.registerTouchArea(bgButton);
 		scene.attachChild(bgButton);
 		scene.attachChild(textButton);
