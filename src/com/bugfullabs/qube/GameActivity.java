@@ -164,6 +164,10 @@ public class GameActivity extends LoadingActivity{
 	}
 	
 	
+	public static void setLevel(Level pLevel){
+		level = pLevel;
+	}
+	
 	private void onTimerUpdate(){
 		
 		checkCollisions();

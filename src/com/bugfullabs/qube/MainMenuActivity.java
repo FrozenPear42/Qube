@@ -203,7 +203,7 @@ public class MainMenuActivity extends LoadingActivity{
 		Buttons[RESET_BUTTON] = new Button(optionsScene, 275, 375, 250, 75, getString(R.string.reset), buttonTexture, Stroke){
 		@Override
 		public boolean onButtonPressed(){
-			this.setText("asd");
+
 			return true;
 		}
 		

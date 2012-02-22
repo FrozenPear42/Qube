@@ -53,9 +53,6 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         
         protected static int MENUITEMS = 3;
 
-        
-    	//liczba NUMBER_OF_ITEMS / NUMBER_OF_ITEMS_IN_ROW = N
-    	//n - liczby naturalne
     	public static final int NUMBER_OF_ITEMS = 15;
     	public static final int NUMBER_OF_ITEMS_IN_ROW = 5;
     	
@@ -67,14 +64,12 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
     	
         
         private Camera mCamera;
-        
         private Scene mScene;
         private Scene gridScene;
         
         private StrokeFont mFont; 
         private BitmapTextureAtlas mFontTexture;     
  
-        // Scrolling
         private SurfaceScrollDetector mScrollDetector;
         private ClickDetector mClickDetector;
  
@@ -87,7 +82,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         private TextureRegion Item;
 		private TextureRegion mBackground;
 		
-        private TexturePack mBackgrounds;
+        //private TexturePack mBackgrounds;
         private TexturePack mLevels; 
            
         private LevelFileReader LevelReader;
@@ -106,7 +101,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         		
         		try {
         			
-        			this.mBackgrounds = new TexturePackLoader(this, "gfx/menu/").loadFromAsset(this, "backgrounds.xml");
+        			//this.mBackgrounds = new TexturePackLoader(this, "gfx/menu/").loadFromAsset(this, "backgrounds.xml");
     				this.mLevels = new TexturePackLoader(this, "gfx/menu/").loadFromAsset(this, "levels.xml");
         		
         		  } catch (TexturePackParseException e) {
@@ -117,7 +112,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
                 Typeface typeface = Typeface.createFromAsset(getAssets(), "font/FOO.ttf");
                 this.mFont = new StrokeFont(mFontTexture, typeface, FONT_SIZE, true, Color.WHITE, 2, Color.BLACK);
                 
-                this.mEngine.getTextureManager().loadTextures(this.mFontTexture, this.mAtlas, this.mBackgrounds.getTexture(), this.mLevels.getTexture());
+                this.mEngine.getTextureManager().loadTextures(this.mFontTexture, this.mAtlas, /*this.mBackgrounds.getTexture(),*/ this.mLevels.getTexture());
                 this.mEngine.getFontManager().loadFont(this.mFont);            
                 
         }
@@ -246,7 +241,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
                                 @Override
                                 public void run() {
                                 		
-                                		setLevelSelectGrid(LevelSelectActivity.this.mBackgrounds.getTexturePackTextureRegionLibrary().get(iLevel-1), Item, iLevel);  
+                                		setLevelSelectGrid(null, Item, iLevel);  
                                 		
                                         iItemClicked = -1;
                                 }
@@ -261,7 +256,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
     	
     	  gridScene = new Scene();
     	  
-    	  gridScene.setBackground(new SpriteBackground(new Sprite(0, 0, bg)));
+    	  //gridScene.setBackground(new SpriteBackground(new Sprite(0, 0, bg)));
   
     	  
     	  int i = 0;
@@ -301,12 +296,9 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
     	  
     	  final Level level = this.LevelReader.getLevel();
     	  
-    	  GameActivity.level = level;
-    	  
+    	  GameActivity.setLevel(level);  
     	  this.startActivity(new Intent(this, GameActivity.class));
-    	  System.exit(0);
-    	  Log.i("TOUCHED", Integer.toString(id+1));
-    	  
+    	  this.finish();  
       }
       
 
