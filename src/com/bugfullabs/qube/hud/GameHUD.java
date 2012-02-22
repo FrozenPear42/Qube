@@ -9,7 +9,7 @@ import com.bugfullabs.qube.util.SpriteButton;
 
 
 
-public class ItemsHUD extends HUD{
+public class GameHUD extends HUD{
 	
 	public static final int BUTTON_NUMBER = 5;
 	public static final int BUTTON_PADDING = 8;
@@ -17,45 +17,35 @@ public class ItemsHUD extends HUD{
 	public static final int ID_STAR = 1;
 	
 	private SpriteButton mButtons[];
-	private SpriteButton playButton;
+	private int mStars = 0;
 	private TexturePack HUDTexturePack;
 	
-	public ItemsHUD(Camera pCamera, TexturePack pTexturePack){
+	public GameHUD(Camera pCamera, TexturePack pTexturePack){
 		
 		super();
 		super.setCamera(pCamera);
 	
 		HUDTexturePack = pTexturePack;
 		
-		mButtons = new SpriteButton[ItemsHUD.BUTTON_NUMBER];
+		mButtons = new SpriteButton[GameHUD.BUTTON_NUMBER];
 
 		this.setBackgroundEnabled(false);
 		
-		for(int i = 0; i < ItemsHUD.BUTTON_NUMBER; i++){
+		for(int i = 0; i < GameHUD.BUTTON_NUMBER; i++){
 		
 			final int id = i;
 			
-			mButtons[i] = new SpriteButton(this, 730, 32+i*(ItemsHUD.BUTTON_PADDING+64), HUDTexturePack.getTexturePackTextureRegionLibrary().get(i+1), HUDTexturePack.getTexturePackTextureRegionLibrary().get(0)){
+			mButtons[i] = new SpriteButton(this, 730, 32+i*(GameHUD.BUTTON_PADDING+64), HUDTexturePack.getTexturePackTextureRegionLibrary().get(i+1), HUDTexturePack.getTexturePackTextureRegionLibrary().get(0)){
 				@Override
 				public void onButtonPressed(){
 				
-					ItemsHUD.this.onItemSelected(id);
+					GameHUD.this.onItemSelected(id);
 					
 				}
 			};
 			
+			
 		}
-		
-		playButton = new SpriteButton(this, 275, 405, HUDTexturePack.getTexturePackTextureRegionLibrary().get(0), HUDTexturePack.getTexturePackTextureRegionLibrary().get(ID_STAR)){
-			
-			@Override
-			public void onButtonPressed(){
-				
-				ItemsHUD.this.onPlay();
-			}
-		};
-			
-	
 		
 	}
 
@@ -69,11 +59,20 @@ public class ItemsHUD extends HUD{
 		this.setTouchAreaBindingEnabled(false);
 	}
 	
-	protected void onItemSelected(int i) {	
+	public void setStars(int number){
+		
+		if(number > mStars){
+		
+		for(int i = mStars; i < number; i++){
+			this.attachChild(new Sprite(i*32,0, HUDTexturePack.getTexturePackTextureRegionLibrary().get(ID_STAR)));
+			
+		}
+		}
 		
 	}
 	
-	protected void onPlay(){
+	
+	protected void onItemSelected(int i) {	
 		
 	}
 	

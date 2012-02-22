@@ -1,6 +1,7 @@
 package com.bugfullabs.qube.level;
 
 import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.scene.background.RepeatingSpriteBackground;
 import org.anddev.andengine.entity.scene.background.SpriteBackground;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;

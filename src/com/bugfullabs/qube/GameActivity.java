@@ -150,15 +150,35 @@ public class GameActivity extends LoadingActivity{
 		}
 		gameScene = LevelSceneFactory.createScene(level, levelPack);
 		
-		mItems = new ItemsHUD(this.mCamera, levelItemsPack);
+		GameActivity.this.onTimerUpdate();
+		
+		mItems = new ItemsHUD(this.mCamera, levelItemsPack){
+			@Override
+			protected void onItemSelected(int id){
+				
+				Log.i("HUD Item selected: ", Integer.toString(id));
+				
+			}
+			
+			@Override
+			protected void onPlay(){
+				
+				Log.i("HUD Item selected: ", "PLAY");
+				this.hide();
+				GameActivity.this.mEngine.registerUpdateHandler(updateTimer);
+			}
+			
+			
+		};
+		mItems.show();
 		this.mCamera.setHUD(mItems);
 		
-		this.mEngine.registerUpdateHandler(updateTimer = new TimerHandler(0.3f, true, new ITimerCallback(){
+		updateTimer = new TimerHandler(0.3f, true, new ITimerCallback(){
 		@Override
 		public void onTimePassed(TimerHandler arg0) {	
 		GameActivity.this.onTimerUpdate();	
 		}		
-		}));
+		});
 		
 		return gameScene;
 	}
@@ -214,6 +234,7 @@ public class GameActivity extends LoadingActivity{
 	
 		for(int i = 0; i < level.getNumberOfCubes(); i++){
 		
+			
 		if(!level.getCube(i).isFinished()){	
 			
 		switch(level.getCube(i).getDirection()){
@@ -253,8 +274,6 @@ public class GameActivity extends LoadingActivity{
 			//TODO: FIX - STAR HAS TO DISAPEAR
 			stars++;
 			
-			mItems.setStars(stars);
-			
 			break;			
 		
 		
@@ -284,7 +303,6 @@ public class GameActivity extends LoadingActivity{
 	private void nextLevel(){
 		
 		this.stars = 0;
-		this.mItems.setStars(0);
 		this.cubesFinished = 0;
 		
 		this.mItems.show();
@@ -302,7 +320,6 @@ public class GameActivity extends LoadingActivity{
 	private void resetLevel(){
 		
 		this.stars = 0;
-		this.mItems.setStars(0);
 		this.cubesFinished = 0;
 		
 		this.mItems.show();

@@ -32,6 +32,28 @@ public class SpriteButton{
 		}
 	
 	
+	public SpriteButton(Scene scene, final float x, final float y, final float width, final float height, final TextureRegion pSprite, final TextureRegion tx){	
+		
+		this.mBgButton = new Sprite(x, y, tx){
+		@Override
+        public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+        if(pSceneTouchEvent.isActionDown() == true){
+		onButtonPressed();
+        }
+		return true;
+    }
+	};
+	
+	this.mSpriteButton = new Sprite(x, y, pSprite);
+		
+	this.mBgButton.setSize(width, height);
+	
+	scene.attachChild(mBgButton);
+	scene.attachChild(mSpriteButton);
+	scene.registerTouchArea(mBgButton);
+	}
+	
+	
 	public SpriteButton(Scene scene, final float x, final float y, final TextureRegion pSprite){	
 		
 		this.mBgButton = new Sprite(x, y, pSprite){
