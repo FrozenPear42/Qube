@@ -22,10 +22,13 @@ import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.VerticalAlign;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
+import android.view.KeyEvent;
+
 import com.bugfullabs.qube.level.Level;
 import com.bugfullabs.qube.level.LevelFileReader;
 import com.bugfullabs.qube.level.LevelSceneFactory;
@@ -36,6 +39,9 @@ import com.bugfullabs.qube.hud.ItemsHUD;
 
 import com.bugfullabs.qube.game.CubeEntity;
 import com.bugfullabs.qube.game.GameValues;
+import com.bugfullabs.qube.game.ScoreReader;
+import com.openfeint.api.resource.Achievement;
+import com.openfeint.api.resource.Achievement.UnlockCB;
 
 
 
@@ -371,6 +377,14 @@ public class GameActivity extends LoadingActivity{
 		this.mEngine.unregisterUpdateHandler(updateTimer);
 		
 		this.mItems.hide();
+			
+		if(ScoreReader.getStars(level) < stars){
+		ScoreReader.setStars(level, stars);
+		}
+		
+		ScoreReader.addTotalCubes(cubesFinished);
+
+		checkAchievements();
 		
 		for(int i = 1; i <= stars; i++){
 		final Sprite star = new Sprite(80+(i*128), 175, starFull);	
@@ -384,8 +398,46 @@ public class GameActivity extends LoadingActivity{
 		
 		this.mEngine.setScene(scoreScene);
 	}
-
-
+	
+	private void checkAchievements(){
+		
+		if(PrivateValues.OFAchievementMasterOfCubesValue <= ScoreReader.getTotalCubes()){
+			
+			new Achievement(PrivateValues.OFAchievementMasterOfCubes).unlock(new UnlockCB(){
+				@Override
+				public void onSuccess(boolean arg0) {
+					
+				}
+			});
+			
+		}
+		
+		if(level.getLevelId() == 15){
+			
+			new Achievement(PrivateValues.OFAchievementProjectPackFinished).unlock(new UnlockCB(){
+				@Override
+				public void onSuccess(boolean arg0) {
+					
+				}
+			});
+			
+		}
+		
+		
+		
+	}
+	
+	
+/*    @Override
+    public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
+            if(pKeyCode == KeyEvent.KEYCODE_BACK && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
+            		this.setIntent(new Intent(GameActivity.this, MainMenuActivity.class));
+                    return true;
+            } else {
+                    return super.onKeyDown(pKeyCode, pEvent);
+            }
+    }
+	*/
 }
 
 

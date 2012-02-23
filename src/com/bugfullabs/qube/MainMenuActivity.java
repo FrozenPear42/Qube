@@ -9,6 +9,7 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
 
+import com.bugfullabs.qube.game.ScoreReader;
 import com.bugfullabs.qube.util.Button;
 import com.bugfullabs.qube.util.SpriteButton;
 import com.openfeint.api.OpenFeint;
@@ -56,6 +57,7 @@ public class MainMenuActivity extends LoadingActivity{
 		
 	    OpenFeintSettings OFSettings = new OpenFeintSettings(PrivateValues.OFName, PrivateValues.OFKey, PrivateValues.OFSecret, PrivateValues.OFId);
 	    OpenFeint.initializeWithoutLoggingIn(this, OFSettings, new OpenFeintDelegate(){});	
+	    ScoreReader.setFilename(this, "Score");
 	}
 	
 	

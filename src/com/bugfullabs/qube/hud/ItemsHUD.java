@@ -14,7 +14,9 @@ public class ItemsHUD extends HUD{
 	public static final int BUTTON_NUMBER = 5;
 	public static final int BUTTON_PADDING = 8;
 
-	public static final int ID_STAR = 1;
+
+	public static final int PLAY_ID = 7;
+	
 	
 	private SpriteButton mButtons[];
 	private SpriteButton playButton;
@@ -46,7 +48,7 @@ public class ItemsHUD extends HUD{
 			
 		}
 		
-		playButton = new SpriteButton(this, 275, 405, HUDTexturePack.getTexturePackTextureRegionLibrary().get(0), HUDTexturePack.getTexturePackTextureRegionLibrary().get(ID_STAR)){
+		playButton = new SpriteButton(this, 730, (BUTTON_NUMBER)*(ItemsHUD.BUTTON_PADDING+64), HUDTexturePack.getTexturePackTextureRegionLibrary().get(PLAY_ID), HUDTexturePack.getTexturePackTextureRegionLibrary().get(0)){
 			
 			@Override
 			public void onButtonPressed(){

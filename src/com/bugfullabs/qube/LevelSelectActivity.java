@@ -296,7 +296,10 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
     	  
     	  final Level level = this.LevelReader.getLevel();
     	  
-    	  GameActivity.setLevel(level);  
+    	  GameActivity.setLevel(level); 
+    	  
+    	  //this.setIntent(new Intent(this, GameActivity.class));
+    	  
     	  this.startActivity(new Intent(this, GameActivity.class));
     	  this.finish();  
       }
