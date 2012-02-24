@@ -10,6 +10,7 @@ public class SpriteButton{
 	
 	private Sprite mBgButton;
 	private Sprite mSpriteButton;
+	private boolean canBeTouched = true;
 	
 	
 	public SpriteButton(Scene scene, final float x, final float y, final TextureRegion pSprite, final TextureRegion tx){	
@@ -38,8 +39,11 @@ public class SpriteButton{
 		@Override
         public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
         if(pSceneTouchEvent.isActionDown() == true){
-		onButtonPressed();
-        }
+        	if(canBeTouched == true)
+        	{
+        	onButtonPressed();
+        	}
+        	}
 		return true;
     }
 	};
@@ -80,8 +84,22 @@ public class SpriteButton{
 		mSpriteButton.setPosition(x, y);
 	}
 	
+	public void setCanBeTouched(boolean value){
+		this.canBeTouched = value;
+	}
+	
+	public boolean canBeTouched(){
+		return this.canBeTouched;
+	}
+	
 	public void onButtonPressed(){
 		
+	}
+
+
+	public void setVisible(boolean isVisible) {
+		this.mBgButton.setVisible(isVisible);
+		this.mSpriteButton.setVisible(isVisible);
 	}
 	
 }

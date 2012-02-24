@@ -22,13 +22,10 @@ import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.VerticalAlign;
 
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
-import android.view.KeyEvent;
-
 import com.bugfullabs.qube.level.Level;
 import com.bugfullabs.qube.level.LevelFileReader;
 import com.bugfullabs.qube.level.LevelSceneFactory;
@@ -42,9 +39,15 @@ import com.bugfullabs.qube.game.GameValues;
 import com.bugfullabs.qube.game.ScoreReader;
 import com.openfeint.api.resource.Achievement;
 import com.openfeint.api.resource.Achievement.UnlockCB;
+import com.openfeint.api.resource.Achievement.UpdateProgressionCB;
 
-
-
+/**
+ * 
+ * @author Bugful Labs
+ * @author Grushenko
+ * @email  wojciech@bugfullabs.pl
+ *
+ */
 
 public class GameActivity extends LoadingActivity{
 	
@@ -84,7 +87,7 @@ public class GameActivity extends LoadingActivity{
 	
 	private TexturePack levelItemsPack;
 	
-	private ItemsHUD mItems;
+	private ItemsHUD mItemsHUD;
 	
 	SharedPreferences settings;
 	SharedPreferences.Editor editor;
@@ -102,15 +105,19 @@ public class GameActivity extends LoadingActivity{
 		this.mFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		this.mBigFontTexture = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		
+	    super.setLoadingProgress(50);
+		
 		Typeface typeface =  Typeface.createFromAsset(getAssets(), "font/FOO.ttf");
 	    this.Stroke = new StrokeFont(mFontTexture, typeface, 26, true, Color.WHITE, 2, Color.BLACK);
 	    this.bigFont = new StrokeFont(mBigFontTexture, typeface, 42, true, Color.WHITE, 2, Color.BLACK);
-	    super.setLoadingProgress(90);
 		
+	    super.setLoadingProgress(60);
+	    
 	    this.starAtlas = new BitmapTextureAtlas(256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 	    this.starFull = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.starAtlas, this, "star_full.png", 0, 0);
 	    this.starBlank = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.starAtlas, this, "star_blank.png", 128, 0);
 	    
+	    super.setLoadingProgress(70);
 	    
 	    try {
 			levelPack = new TexturePackLoader(this, "gfx/game/").loadFromAsset(this, level.getLevelTexture()+".xml");
@@ -124,6 +131,8 @@ public class GameActivity extends LoadingActivity{
 			e.printStackTrace();
 		}	    
 	    
+	    super.setLoadingProgress(80);
+	    
 	    MusicFactory.setAssetBasePath("music/");
         try {
                 this.gameMusic = MusicFactory.createMusicFromAsset(this.mEngine.getMusicManager(), this, "game.ogg");
@@ -135,13 +144,14 @@ public class GameActivity extends LoadingActivity{
 	    
 	    this.mEngine.getTextureManager().loadTextures(this.mAtlas, this.mFontTexture, this.mBigFontTexture,this.starAtlas, this.levelPack.getTexture(), this.levelItemsPack.getTexture());
 	    this.mEngine.getFontManager().loadFonts(Stroke, bigFont);      
-	    super.setLoadingProgress(100);
+	    super.setLoadingProgress(90);
 		
 	    createScoreScene();
 	    
 		settings = getSharedPreferences(SETTINGS_FILE, 0);
 		editor = settings.edit();		
 	
+	    super.setLoadingProgress(100);
 	    
 	}
 	
@@ -158,28 +168,26 @@ public class GameActivity extends LoadingActivity{
 		
 		GameActivity.this.onTimerUpdate();
 		
-		mItems = new ItemsHUD(this.mCamera, levelItemsPack){
+		mItemsHUD = new ItemsHUD(this.mCamera, levelItemsPack){
 			@Override
 			protected void onItemSelected(int id){
-				
-				Log.i("HUD Item selected: ", Integer.toString(id));
-				
+			Log.i("HUD Item selected: ", Integer.toString(id));
 			}
-			
 			@Override
 			protected void onPlay(){
-				
-				Log.i("HUD Item selected: ", "PLAY");
-				this.hide();
-				GameActivity.this.mEngine.registerUpdateHandler(updateTimer);
+				GameActivity.this.start();
+			}
+			@Override
+			protected void onStop(){
+				GameActivity.this.stop();
 			}
 			
-			
 		};
-		mItems.show();
-		this.mCamera.setHUD(mItems);
+
+		mItemsHUD.show();
+		this.mCamera.setHUD(mItemsHUD);
 		
-		updateTimer = new TimerHandler(0.3f, true, new ITimerCallback(){
+		updateTimer = new TimerHandler(0.2f, true, new ITimerCallback(){
 		@Override
 		public void onTimePassed(TimerHandler arg0) {	
 		GameActivity.this.onTimerUpdate();	
@@ -190,6 +198,22 @@ public class GameActivity extends LoadingActivity{
 	}
 	
 	
+	protected void start() {
+		Log.i("HUD Item selected: ", "PLAY");
+		mItemsHUD.setType(ItemsHUD.GAME);
+		GameActivity.this.mEngine.registerUpdateHandler(updateTimer);
+	}
+
+
+
+	protected void stop() {
+		Log.i("HUD Item selected: ", "STOP");
+		GameActivity.this.mEngine.unregisterUpdateHandler(updateTimer);
+		mItemsHUD.setType(ItemsHUD.ITEMS);
+	}
+
+
+
 	public static void setLevel(Level pLevel){
 		level = pLevel;
 	}
@@ -278,6 +302,7 @@ public class GameActivity extends LoadingActivity{
 		case GameValues.ITEM_STAR:
 
 			//TODO: FIX - STAR HAS TO DISAPEAR
+			mItemsHUD.setStars(stars);
 			stars++;
 			
 			break;			
@@ -311,7 +336,7 @@ public class GameActivity extends LoadingActivity{
 		this.stars = 0;
 		this.cubesFinished = 0;
 		
-		this.mItems.show();
+		this.mItemsHUD.show();
 		
 		LevelFileReader lvReader = new LevelFileReader(this, "level_"+Integer.toString(level.getLevelpackId())+"_"+Integer.toString(level.getLevelId()+1));
 		level = lvReader.getLevel();
@@ -328,7 +353,7 @@ public class GameActivity extends LoadingActivity{
 		this.stars = 0;
 		this.cubesFinished = 0;
 		
-		this.mItems.show();
+		this.mItemsHUD.show();
 		
 		LevelFileReader lvReader = new LevelFileReader(this, "level_"+Integer.toString(level.getLevelpackId())+"_"+Integer.toString(level.getLevelId()));
 		level = lvReader.getLevel();
@@ -376,7 +401,7 @@ public class GameActivity extends LoadingActivity{
 	private void loadScoreScene(){
 		this.mEngine.unregisterUpdateHandler(updateTimer);
 		
-		this.mItems.hide();
+		this.mItemsHUD.hide();
 			
 		if(ScoreReader.getStars(level) < stars){
 		ScoreReader.setStars(level, stars);
@@ -401,16 +426,15 @@ public class GameActivity extends LoadingActivity{
 	
 	private void checkAchievements(){
 		
-		if(PrivateValues.OFAchievementMasterOfCubesValue <= ScoreReader.getTotalCubes()){
-			
-			new Achievement(PrivateValues.OFAchievementMasterOfCubes).unlock(new UnlockCB(){
-				@Override
-				public void onSuccess(boolean arg0) {
-					
-				}
-			});
-			
-		}
+		
+		new Achievement(PrivateValues.OFAchievementMasterOfCubes).updateProgression((ScoreReader.getTotalCubes()/PrivateValues.OFAchievementMasterOfCubesValue)*100, new UpdateProgressionCB()
+		{
+			@Override
+			public void onSuccess(boolean arg0) {
+			}	
+		});
+		
+
 		
 		if(level.getLevelId() == 15){
 			

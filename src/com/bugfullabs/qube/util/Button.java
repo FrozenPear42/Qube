@@ -65,8 +65,14 @@ public class Button{
 		return (int) this.bgButton.getHeight();
 	}
 
+	public float getX(){
+		return this.mX;
+	}
 
-
+	public float getY(){
+		return this.mY;
+	}
+	
 	public int getWidth() {
 		
 		return (int) this.bgButton.getWidth();

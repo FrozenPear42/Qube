@@ -40,9 +40,10 @@ import android.util.Log;
  * 
  * @author Bugful Labs
  * @author Grushenko
- * @email  admin@bugfullabs.pl
+ * @email  wojciech@bugfullabs.pl
  *
  */
+
 public class LevelSelectActivity extends BaseGameActivity implements IScrollDetectorListener, IOnSceneTouchListener, IClickDetectorListener {
        
 	    protected static int CAMERA_WIDTH = 800;
@@ -184,10 +185,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         public void onClick(ClickDetector pClickDetector, TouchEvent pTouchEvent) {
                 loadLevel(iItemClicked);
         };
- 
-        // ===========================================================
-        // Methods
-        // ===========================================================
+
         
         private void CreateMenuBoxes() {
         	

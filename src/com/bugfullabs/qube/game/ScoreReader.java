@@ -53,7 +53,7 @@ public class ScoreReader{
 	
 	public static void addTotalCubes(int value){
 		
-		scoreEditor.putInt("TotalCubes", score.getInt("TotalCubes", 0) + value);
+		scoreEditor.putInt("TotalCubes", (score.getInt("TotalCubes", 0) + value));
 		
 	}
 
