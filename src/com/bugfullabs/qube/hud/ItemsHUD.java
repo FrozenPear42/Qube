@@ -2,7 +2,6 @@ package com.bugfullabs.qube.hud;
 
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.camera.hud.HUD;
-import org.anddev.andengine.entity.IEntity;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;
 
@@ -35,6 +34,8 @@ public class ItemsHUD extends HUD{
 	private Sprite mStars[];
 	
 	private int mStarsNumber = 0;
+	
+	private boolean isPlay = false;
 	
 	public ItemsHUD(Camera pCamera, TexturePack pTexturePack){
 		
@@ -70,16 +71,12 @@ public class ItemsHUD extends HUD{
 			@Override
 			public void onButtonPressed(){
 				
+				if(!isPlay){
 				ItemsHUD.this.onPlay();
-			}
-		};
-		
-		this.stopButton = new SpriteButton(this, 730, 32+(ITEMS_BUTTON_NUMBER)*(ItemsHUD.BUTTON_PADDING+64), HUDTexturePack.getTexturePackTextureRegionLibrary().get(STOP_ID), HUDTexturePack.getTexturePackTextureRegionLibrary().get(BG_ID)){
-			@Override
-			public void onButtonPressed(){
-				Log.i("TOUCHED","STOP");
+				}else{
 				ItemsHUD.this.onStop();
-			}
+				}
+				}
 		};		
 		
 		
@@ -113,17 +110,25 @@ public class ItemsHUD extends HUD{
 			this.detachChild(mStars[i]);
 			}
 			this.mStarsNumber = 0;
-			this.stopButton.setCanBeTouched(false);
-			this.stopButton.setVisible(false);
+			
+			this.mItemsButtons[ITEMS_BUTTON_NUMBER].setSprite(HUDTexturePack.getTexturePackTextureRegionLibrary().get(PLAY_ID));
+			
+			this.isPlay = false;
+			
 			break;
 			
 		case GAME:
-			this.stopButton.setCanBeTouched(true);
-			this.stopButton.setVisible(true);
+
 			for(int i = 0; i < ITEMS_BUTTON_NUMBER; i++){
 			this.mItemsButtons[i].setCanBeTouched(false);
 			this.mItemsButtons[i].setVisible(false);
 			}
+			
+			this.mItemsButtons[ITEMS_BUTTON_NUMBER].setSprite(HUDTexturePack.getTexturePackTextureRegionLibrary().get(STOP_ID));
+			
+			
+			this.isPlay = true;
+			
 			break;
 
 		}

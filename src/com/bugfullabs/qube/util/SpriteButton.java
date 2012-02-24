@@ -11,17 +11,22 @@ public class SpriteButton{
 	private Sprite mBgButton;
 	private Sprite mSpriteButton;
 	private boolean canBeTouched = true;
-	
+	private Scene mScene;
 	
 	public SpriteButton(Scene scene, final float x, final float y, final TextureRegion pSprite, final TextureRegion tx){	
 		
+			this.mScene = scene;
+		
 			this.mBgButton = new Sprite(x, y, tx){
-			@Override
-	        public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-	        if(pSceneTouchEvent.isActionDown() == true){
-			onButtonPressed();
-	        }
-			return true;
+				@Override
+		        public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+		        if(pSceneTouchEvent.isActionDown() == true){
+		        	if(canBeTouched == true)
+		        	{
+		        	onButtonPressed();
+		        	}
+		        	}
+				return true;
 	    }
 		};
 		
@@ -61,12 +66,15 @@ public class SpriteButton{
 	public SpriteButton(Scene scene, final float x, final float y, final TextureRegion pSprite){	
 		
 		this.mBgButton = new Sprite(x, y, pSprite){
-		@Override
-        public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-        if(pSceneTouchEvent.isActionDown() == true){
-		onButtonPressed();
-        }
-		return true;
+			@Override
+	        public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+	        if(pSceneTouchEvent.isActionDown() == true){
+	        	if(canBeTouched == true)
+	        	{
+	        	onButtonPressed();
+	        	}
+	        	}
+			return true;
     }
 	};
 	scene.attachChild(mBgButton);
@@ -77,6 +85,14 @@ public class SpriteButton{
 	public void setSprite(Sprite pSprite){
 		this.mSpriteButton = pSprite;
 	}
+	
+	public void setSprite(TextureRegion pSprite){
+		this.mSpriteButton.detachSelf();
+		this.mSpriteButton = new Sprite(mSpriteButton.getX(), mSpriteButton.getY(),pSprite);
+		this.mScene.attachChild(mSpriteButton);
+		
+	}
+	
 	
 	public void setPosition(final float x, final float y){
 		
@@ -94,6 +110,16 @@ public class SpriteButton{
 	
 	public void onButtonPressed(){
 		
+	}
+	
+	public void detach(){
+		this.mBgButton.detachSelf();
+		this.mSpriteButton.detachSelf();
+	}
+	
+	public void attachTo(Scene s){
+		s.attachChild(mBgButton);
+		s.attachChild(mSpriteButton);
 	}
 
 
