@@ -41,6 +41,8 @@ import com.bugfullabs.qube.game.ScoreReader;
 import com.openfeint.api.resource.Achievement;
 import com.openfeint.api.resource.Achievement.UnlockCB;
 import com.openfeint.api.resource.Achievement.UpdateProgressionCB;
+import com.openfeint.api.resource.Leaderboard;
+import com.openfeint.api.resource.Score;
 
 /**
  * 
@@ -323,6 +325,8 @@ public class GameActivity extends LoadingActivity{
 		
 		}
 		
+		checkCollisions();
+		
 		}
 	}
 	
@@ -497,7 +501,17 @@ public class GameActivity extends LoadingActivity{
 	
 	private void checkAchievements(){
 		
-		
+		ScoreReader.setScore(level, calculateScore());
+		ScoreReader.setAllScores(level, 15);
+		new Score(ScoreReader.getLevelpackScore(level), null).submitTo(new Leaderboard(PrivateValues.OFLeaderboardProject), new Score.SubmitToCB(){
+
+			@Override
+			public void onSuccess(boolean arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+
 		new Achievement(PrivateValues.OFAchievementMasterOfCubes).updateProgression((ScoreReader.getTotalCubes()/PrivateValues.OFAchievementMasterOfCubesValue)*100, new UpdateProgressionCB()
 		{
 			@Override

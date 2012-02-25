@@ -109,7 +109,6 @@ public class SpriteButton{
 		this.mSpriteButton.detachSelf();
 		this.mSpriteButton = new Sprite(mSpriteButton.getX(), mSpriteButton.getY(),pSprite);
 		this.mScene.attachChild(mSpriteButton);
-		
 	}
 	
 	

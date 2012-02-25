@@ -132,6 +132,10 @@ public class ItemsHUD extends HUD{
 	}
 	
 	public void setStars(int stars){
+		if(stars > 2){
+		return;
+		}
+			
 		if(stars > this.mStarsNumber){
 			this.mStarsNumber = stars;
 			for(int i = stars; i<3; i++){
