@@ -13,6 +13,7 @@ import org.anddev.andengine.entity.util.FPSLogger;
 import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;
 import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePackLoader;
 import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.exception.TexturePackParseException;
+import org.anddev.andengine.input.touch.TouchEvent;
 import org.anddev.andengine.opengl.font.StrokeFont;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -163,10 +164,6 @@ public class GameActivity extends LoadingActivity{
 		
 		mItemsHUD = new ItemsHUD(this.mCamera, levelItemsPack){
 			@Override
-			protected void onItemSelected(int id){
-			Log.i("HUD Item selected: ", Integer.toString(id));
-			}
-			@Override
 			protected void onPlay(){
 				GameActivity.this.start();
 			}
@@ -175,6 +172,76 @@ public class GameActivity extends LoadingActivity{
 				GameActivity.this.stop();
 			}
 			
+			@Override 
+			protected void onButtonTouchEvent(final int id, final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY){
+				Log.i("TOUCH EVENT","Game");
+				this.getButton(id).setItemScale(1.33f, 1.33f);
+				this.getButton(id).setItemPosition(pSceneTouchEvent.getX() - getButton(id).getItemWidth() / 2, pSceneTouchEvent.getY() - getButton(id).getItemHeight() / 2);
+			
+				if(pSceneTouchEvent.isActionUp()){
+					
+					int dropX;
+					int dropY;
+					
+					int tableX;
+					int tableY;
+					
+					this.getButton(id).reset();
+					
+					tableX = (int) ((pSceneTouchEvent.getX())/32);
+					dropX = tableX*32;
+					tableY = (int) ((pSceneTouchEvent.getY())/32);
+					dropY = tableY*32;
+				
+					switch(id){
+					
+					case GameValues.HUD_ITEM_1:	
+						level.setItem(tableX, tableY, GameValues.ITEM_SOLID);
+						gameScene.attachChild(new Sprite(dropX, dropY, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
+					break;
+					
+					case GameValues.HUD_ITEM_2:
+						
+						level.setItem(tableX, tableY, GameValues.ITEM_SOLID);
+						level.setItem(tableX, tableY+1, GameValues.ITEM_SOLID);
+						gameScene.attachChild(new Sprite(dropX, dropY, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
+						gameScene.attachChild(new Sprite(dropX, dropY+32, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
+					
+					break;
+						
+					case GameValues.HUD_ITEM_2_2:
+						level.setItem(tableX, tableY+1, GameValues.ITEM_SOLID);
+						level.setItem(tableX+1, tableY, GameValues.ITEM_SOLID);
+						gameScene.attachChild(new Sprite(dropX, dropY+32, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
+						gameScene.attachChild(new Sprite(dropX+32, dropY, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
+							
+					break;
+					
+					case GameValues.HUD_ITEM_3:
+						level.setItem(tableX, tableY+1, GameValues.ITEM_SOLID);
+						level.setItem(tableX+1, tableY+1, GameValues.ITEM_SOLID);
+						level.setItem(tableX+1, tableY, GameValues.ITEM_SOLID);
+						gameScene.attachChild(new Sprite(dropX, dropY+32, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
+						gameScene.attachChild(new Sprite(dropX+32, dropY+32, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
+						gameScene.attachChild(new Sprite(dropX+32, dropY, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
+						
+					break;
+					
+					case GameValues.HUD_ITEM_4:
+						level.setItem(tableX, tableY+1, GameValues.ITEM_SOLID);
+						level.setItem(tableX+1, tableY+1, GameValues.ITEM_SOLID);
+						level.setItem(tableX+1, tableY, GameValues.ITEM_SOLID);
+						level.setItem(tableX, tableY, GameValues.ITEM_SOLID);
+						gameScene.attachChild(new Sprite(dropX, dropY+32, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
+						gameScene.attachChild(new Sprite(dropX+32, dropY+32, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
+						gameScene.attachChild(new Sprite(dropX+32, dropY, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
+						gameScene.attachChild(new Sprite(dropX, dropY, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));						
+					break;
+						
+					
+					}
+				}
+			}
 		};
 
 		mItemsHUD.show();
@@ -202,6 +269,12 @@ public class GameActivity extends LoadingActivity{
 
 	protected void stop() {
 		Log.i("HUD Item selected: ", "STOP");
+		
+		for(int i = 0; i < level.getNumberOfCubes(); i++){
+		level.getCube(i).moveToInitPosition();
+		}
+		
+		
 		GameActivity.this.mEngine.unregisterUpdateHandler(updateTimer);
 		mItemsHUD.setType(ItemsHUD.ITEMS);
 	}
@@ -329,7 +402,7 @@ public class GameActivity extends LoadingActivity{
 		
 		this.stars = 0;
 		this.cubesFinished = 0;
-		
+		this.gameTime = 0;
 		this.mItemsHUD.show();
 		
 		LevelFileReader lvReader = new LevelFileReader(this, "level_"+Integer.toString(level.getLevelpackId())+"_"+Integer.toString(level.getLevelId()+1));
@@ -346,7 +419,7 @@ public class GameActivity extends LoadingActivity{
 		
 		this.stars = 0;
 		this.cubesFinished = 0;
-		
+		this.gameTime = 0;
 		this.mItemsHUD.show();
 		
 		LevelFileReader lvReader = new LevelFileReader(this, "level_"+Integer.toString(level.getLevelpackId())+"_"+Integer.toString(level.getLevelId()));

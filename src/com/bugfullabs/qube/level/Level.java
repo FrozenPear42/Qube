@@ -85,9 +85,9 @@ public class Level{
 		this.numberOfCubes = number;
 	}
 	
-	public CubeEntity setCube(int x, int y,int color,int index){
+	public CubeEntity setCube(int x, int y,int color, int direction, int index ){
 		
-		final CubeEntity cube = new CubeEntity(x*32, y*32, color);
+		final CubeEntity cube = new CubeEntity(x*32, y*32, color, direction);
 		cubes.add(index, cube);
 		return cubes.get(index);
 	}

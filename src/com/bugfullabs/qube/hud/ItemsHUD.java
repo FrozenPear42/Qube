@@ -4,6 +4,7 @@ import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;
+import org.anddev.andengine.input.touch.TouchEvent;
 
 import com.bugfullabs.qube.util.SpriteButton;
 
@@ -55,9 +56,8 @@ public class ItemsHUD extends HUD{
 			
 			mItemsButtons[i] = new SpriteButton(this, 730, 32+i*(ItemsHUD.BUTTON_PADDING+64), HUDTexturePack.getTexturePackTextureRegionLibrary().get(i+1), HUDTexturePack.getTexturePackTextureRegionLibrary().get(BG_ID)){
 				@Override
-				public void onButtonPressed(){
-					ItemsHUD.this.onItemSelected(id);
-					
+				public void onButtonTouchEvent(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY){
+				ItemsHUD.this.onButtonTouchEvent(id, pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);	
 				}
 			};
 			
@@ -141,8 +141,12 @@ public class ItemsHUD extends HUD{
 		
 	}
 	
+	public SpriteButton getButton(int id){
+		return this.mItemsButtons[id];
+	}
 	
-	protected void onItemSelected(int i) {	
+	
+	protected void onButtonTouchEvent(final int id, final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY){
 		
 	}
 	

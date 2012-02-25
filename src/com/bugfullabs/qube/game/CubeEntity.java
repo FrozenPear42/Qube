@@ -19,16 +19,26 @@ public class CubeEntity {
 	private float x;
 	private float y;
 	
+	private float initX;
+	private float initY;
+		
+	private int initDirection;
+	
 	private int color;
 	
 	private Sprite sprite;
 	
 	private boolean finished = false;
 	
-	public CubeEntity(int pX, int pY, int pColor) {
+	public CubeEntity(int pX, int pY, int pColor, int pDirection) {
 	x = pX;
 	y = pY;
+	initX = pX;
+	initY = pY;
 	color = pColor;
+	
+	initDirection = pDirection;
+	direction = pDirection;
 	}
 	
 	public int getDirection(){
@@ -54,6 +64,13 @@ public class CubeEntity {
 		
 		this.x = x;
 		this.y = y;
+	}
+	
+	public void moveToInitPosition(){
+		sprite.setPosition(initX, initY);
+		this.x = initX;
+		this.y = initY;
+		this.setDirection(initDirection);
 	}
 	
 	public float getX(){

@@ -72,7 +72,7 @@ public class LevelHandler extends DefaultHandler{
 			}else if(localName.equals("cube")){
 
 				
-				level.setCube(Integer.parseInt(atts.getValue("column")), Integer.parseInt(atts.getValue("row")), Integer.parseInt(atts.getValue("color")), Integer.parseInt(atts.getValue("id"))-1).setDirection(Integer.parseInt(atts.getValue("dir")));	
+				level.setCube(Integer.parseInt(atts.getValue("column")), Integer.parseInt(atts.getValue("row")), Integer.parseInt(atts.getValue("color")), Integer.parseInt(atts.getValue("dir")), Integer.parseInt(atts.getValue("id"))-1);	
 				
 				
 			}
