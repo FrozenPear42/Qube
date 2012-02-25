@@ -325,8 +325,6 @@ public class GameActivity extends LoadingActivity{
 		
 		}
 		
-		checkCollisions();
-		
 		}
 	}
 	
@@ -373,7 +371,7 @@ public class GameActivity extends LoadingActivity{
 		case GameValues.ITEM_STAR:
 
 			//TODO: FIX - STAR HAS TO DISAPEAR
-			mItemsHUD.setStars(stars);
+			//mItemsHUD.setStars(stars);
 			stars++;
 			
 			break;			
@@ -507,7 +505,6 @@ public class GameActivity extends LoadingActivity{
 
 			@Override
 			public void onSuccess(boolean arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
