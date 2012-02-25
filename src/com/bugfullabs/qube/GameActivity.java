@@ -88,8 +88,10 @@ public class GameActivity extends LoadingActivity{
 	
 	private int stars = 0;
 	private int cubesFinished = 0;
+	private int collisions = 0;
 	
 	private float gameTime = 0;
+	
 	
 	@Override
 	protected void assetsToLoad() {
@@ -333,6 +335,7 @@ public class GameActivity extends LoadingActivity{
 	
 		for(int i = 0; i < level.getNumberOfCubes(); i++){
 		
+		collisions = 0;
 			
 		if(!level.getCube(i).isFinished()){	
 			
@@ -360,12 +363,45 @@ public class GameActivity extends LoadingActivity{
 	}
 	
 	
+	private void checkCollision(int cubeId){
+
+		if(!level.getCube(cubeId).isFinished()){	
+			
+		switch(level.getCube(cubeId).getDirection()){
+		
+		case CubeEntity.DIRECTION_FORWARD:	
+			proceedCollision(level.getItemNumber((int)level.getCube(cubeId).getX()/32, (int)(level.getCube(cubeId).getY()/32)-1), cubeId, CubeEntity.DIRECTION_RIGHT);
+			break;
+			
+		case CubeEntity.DIRECTION_BACKWARD:
+			proceedCollision(level.getItemNumber((int)level.getCube(cubeId).getX()/32, (int)(level.getCube(cubeId).getY()/32)+1), cubeId, CubeEntity.DIRECTION_LEFT);
+			break;
+			
+		case CubeEntity.DIRECTION_LEFT:
+			proceedCollision(level.getItemNumber((int)(level.getCube(cubeId).getX()/32)-1, (int)level.getCube(cubeId).getY()/32), cubeId, CubeEntity.DIRECTION_FORWARD);
+			break;
+			
+		case CubeEntity.DIRECTION_RIGHT:
+			proceedCollision(level.getItemNumber((int)(level.getCube(cubeId).getX()/32)+1, (int)level.getCube(cubeId).getY()/32), cubeId, CubeEntity.DIRECTION_BACKWARD);
+			break;
+		}
+	
+		}
+	}
+	
 	private void proceedCollision(int id, int cubeId, int nextDirection){
 		
 		switch(id){
 		
 		case GameValues.ITEM_SOLID:
 			level.getCube(cubeId).setDirection(nextDirection);
+			collisions++;
+			if(collisions<3){
+			checkCollision(cubeId);
+			}else{
+				this.stop();
+				//GAME OVER - NO EXIT
+			}
 			break;
 
 		case GameValues.ITEM_STAR:
