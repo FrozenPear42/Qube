@@ -407,7 +407,7 @@ public class GameActivity extends LoadingActivity{
 		case GameValues.ITEM_STAR:
 
 			//TODO: FIX - STAR HAS TO DISAPEAR
-			//mItemsHUD.setStars(stars);
+			mItemsHUD.setStars(stars);
 			stars++;
 			
 			break;			

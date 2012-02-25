@@ -62,6 +62,7 @@ public class ScoreReader{
 		return score.getInt("TotalCubes", 0);
 	}
 	
+	
 	public static void setAllScores(Level level, int numberOfLevels){
 		
 		int all = 0;
