@@ -1,7 +1,6 @@
 package com.bugfullabs.qube.level;
 
 import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.scene.background.RepeatingSpriteBackground;
 import org.anddev.andengine.entity.scene.background.SpriteBackground;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;
@@ -73,6 +72,7 @@ public class LevelSceneFactory{
 			for (int i = 0; i < level.getNumberOfCubes(); i++){
 				level.getCube(i).setTextureRegion(txPack.getTexturePackTextureRegionLibrary().get(level.getCube(i).getColor()));
 				level.getCube(i).attachToScene(levelScene);
+				level.getCube(i).setPosition(level.getCube(i).getX(), level.getCube(i).getY());
 			}
 			
 			

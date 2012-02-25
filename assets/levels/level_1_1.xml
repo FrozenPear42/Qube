@@ -74,8 +74,8 @@
 
 
 <cubes number="2">
-<cube color="0" column ="3" row="4" id="1"/>
-<cube color="1" column ="6" row="4" id="2"/>
+<cube color="0" column ="3" row="4" id="1" dir="1"/>
+<cube color="1" column ="6" row="4" id="2" dir="2"/>
 </cubes>
 
 </level>

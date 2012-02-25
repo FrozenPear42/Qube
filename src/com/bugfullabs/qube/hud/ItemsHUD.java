@@ -5,8 +5,6 @@ import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;
 
-import android.util.Log;
-
 import com.bugfullabs.qube.util.SpriteButton;
 
 
@@ -28,7 +26,6 @@ public class ItemsHUD extends HUD{
 	public static final int GAME = 2;
 	
 	private SpriteButton mItemsButtons[];
-	private SpriteButton stopButton;
 	private TexturePack HUDTexturePack;
 	
 	private Sprite mStars[];

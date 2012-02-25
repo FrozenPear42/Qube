@@ -54,12 +54,32 @@ public class ScoreReader{
 	public static void addTotalCubes(int value){
 		
 		scoreEditor.putInt("TotalCubes", (score.getInt("TotalCubes", 0) + value));
-		
+		scoreEditor.commit();
 	}
 
 	public static int getTotalCubes() {
 
 		return score.getInt("TotalCubes", 0);
+	}
+	
+	public static void setAllScores(Level level, int numberOfLevels){
+		
+		int all = 0;
+		
+		for(int i = 0; i < numberOfLevels; i++)
+		{
+			all += score.getInt(level.getLevelpackId() + Integer.toString(i) + "score", 0);
+		}	
+		scoreEditor.putInt("levelpack"+Integer.toString(level.getLevelpackId()), all);
+		scoreEditor.commit();
+	}
+	
+	public static int getLevelpackScore(Level level){
+		return score.getInt("levelpack"+Integer.toString(level.getLevelpackId()), 0);
+	}
+
+	public static int getLevelpackScore(int number){
+		return score.getInt("levelpack"+Integer.toString(number), 0);
 	}
 	
 	

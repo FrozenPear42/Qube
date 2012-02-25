@@ -60,38 +60,33 @@ public class GameActivity extends LoadingActivity{
 	private TimerHandler updateTimer;
 	
 	private BitmapTextureAtlas mAtlas;
-	
 	private BitmapTextureAtlas mFontTexture;
-	
-	private StrokeFont Stroke;
-	
-	private StrokeFont bigFont;
-	
-	private TextureRegion buttonTexture;
-	
 	private BitmapTextureAtlas starAtlas;
-	
-	private TextureRegion starFull;
-	
-	private TextureRegion starBlank;
-	
-	private int stars = 0;
-	
 	private BitmapTextureAtlas mBigFontTexture;
 	
-	private TexturePack levelPack;
-	
-	private int cubesFinished = 0;
-	
-	private Music gameMusic; 
+	private TextureRegion buttonTexture;
+	private TextureRegion starFull;
+	private TextureRegion starBlank;
 	
 	private TexturePack levelItemsPack;
+	private TexturePack levelPack;
 	
-	private ItemsHUD mItemsHUD;
+	private StrokeFont Stroke;
+	private StrokeFont bigFont;
 	
 	SharedPreferences settings;
 	SharedPreferences.Editor editor;
 	private static final String SETTINGS_FILE = "Settings";
+	
+	
+	private Music gameMusic; 
+	
+	private ItemsHUD mItemsHUD;
+	
+	private int stars = 0;
+	private int cubesFinished = 0;
+	
+	private float gameTime = 0;
 	
 	@Override
 	protected void assetsToLoad() {
@@ -166,8 +161,6 @@ public class GameActivity extends LoadingActivity{
 		}
 		gameScene = LevelSceneFactory.createScene(level, levelPack);
 		
-		GameActivity.this.onTimerUpdate();
-		
 		mItemsHUD = new ItemsHUD(this.mCamera, levelItemsPack){
 			@Override
 			protected void onItemSelected(int id){
@@ -189,7 +182,8 @@ public class GameActivity extends LoadingActivity{
 		
 		updateTimer = new TimerHandler(0.2f, true, new ITimerCallback(){
 		@Override
-		public void onTimePassed(TimerHandler arg0) {	
+		public void onTimePassed(TimerHandler arg0) {
+		GameActivity.this.gameTime += 0.2f;
 		GameActivity.this.onTimerUpdate();	
 		}		
 		});
@@ -409,6 +403,8 @@ public class GameActivity extends LoadingActivity{
 		
 		ScoreReader.addTotalCubes(cubesFinished);
 
+		Log.i("TOTALCUBES", Integer.toString(ScoreReader.getTotalCubes()));
+		
 		checkAchievements();
 		
 		for(int i = 1; i <= stars; i++){
@@ -420,6 +416,8 @@ public class GameActivity extends LoadingActivity{
 		final Sprite star = new Sprite(80+(i*128), 175, starBlank);	
 		scoreScene.attachChild(star);	
 		}
+		
+		scoreScene.attachChild(new AlignedText(0, 0, Stroke, Integer.toString(this.calculateScore()), HorizontalAlign.LEFT, VerticalAlign.CENTER, 800, 40));
 		
 		this.mEngine.setScene(scoreScene);
 	}
@@ -446,22 +444,14 @@ public class GameActivity extends LoadingActivity{
 			});
 			
 		}
-		
-		
-		
+	
 	}
 	
 	
-/*    @Override
-    public boolean onKeyDown(final int pKeyCode, final KeyEvent pEvent) {
-            if(pKeyCode == KeyEvent.KEYCODE_BACK && pEvent.getAction() == KeyEvent.ACTION_DOWN) {
-            		this.setIntent(new Intent(GameActivity.this, MainMenuActivity.class));
-                    return true;
-            } else {
-                    return super.onKeyDown(pKeyCode, pEvent);
-            }
-    }
-	*/
+	
+	private int calculateScore(){
+		return (int) ((this.stars+1)* 1000 + (1/this.gameTime)*(50000.0f));
+	}
 }
 
 
