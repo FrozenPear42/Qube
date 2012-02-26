@@ -299,7 +299,10 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
     	  //this.setIntent(new Intent(this, GameActivity.class));
     	  
     	  this.startActivity(new Intent(this, GameActivity.class));
-    	  this.finish();  
+    	  this.finish();
+    	  
+    	  overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+			
       }
       
 

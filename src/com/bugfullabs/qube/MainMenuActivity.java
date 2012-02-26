@@ -135,6 +135,9 @@ public class MainMenuActivity extends LoadingActivity{
 			
 			Intent intent = new Intent(MainMenuActivity.this, LevelSelectActivity.class);
 			MainMenuActivity.this.startActivity(intent);
+			
+			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+			
 			return true;
 			}
 		};

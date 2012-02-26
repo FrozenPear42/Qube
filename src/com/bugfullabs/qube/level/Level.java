@@ -11,7 +11,7 @@ public class Level{
 	private int level_pattern[][];
 	private int width;
 	private int height;		
-	private int numberOfCubes = 10;		
+	private int numberOfCubes;		
 	private ArrayList<CubeEntity> cubes;
 	
 	private int id;
