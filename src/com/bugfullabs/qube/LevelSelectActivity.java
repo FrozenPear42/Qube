@@ -33,7 +33,6 @@ import com.bugfullabs.qube.level.LevelFileReader;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.util.Log;
 
 
 /**
@@ -295,9 +294,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
     	  final Level level = this.LevelReader.getLevel();
     	  
     	  GameActivity.setLevel(level); 
-    	  
-    	  //this.setIntent(new Intent(this, GameActivity.class));
-    	  
+    	   	  
     	  this.startActivity(new Intent(this, GameActivity.class));
     	  this.finish();
     	  

@@ -121,15 +121,10 @@ public class GameActivity extends LoadingActivity{
 	    
 	    try {
 			levelPack = new TexturePackLoader(this, "gfx/game/").loadFromAsset(this, level.getLevelTexture()+".xml");
-		} catch (TexturePackParseException e) {
+			levelItemsPack = new TexturePackLoader(this, "gfx/game/").loadFromAsset(this, level.getLevelTexture()+"_items.xml");
+	    } catch (TexturePackParseException e) {
 			e.printStackTrace();
 		}
-	    
-	    try {
-			levelItemsPack = new TexturePackLoader(this, "gfx/game/").loadFromAsset(this, level.getLevelTexture()+"_items.xml");
-		} catch (TexturePackParseException e) {
-			e.printStackTrace();
-		}	    
 	    
 	    super.setLoadingProgress(80);
 	    

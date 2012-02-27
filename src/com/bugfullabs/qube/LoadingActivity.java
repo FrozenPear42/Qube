@@ -21,14 +21,14 @@ import com.bugfullabs.qube.util.IAsyncCallback;
 import com.bugfullabs.qube.util.ProgressBar; 
 
 /**
- * Written by Tyler Reid of Studio Reveries.
  * 
- * All work provided can be modified and used freely so long as this statement stays in the source code.
- * 
- * 
- * @author Tyler Reid @ www.studioreveries.com
+ * @author Bugful Labs
+ * @author Grushenko
+ * @email  wojciech@bugfullabs.pl
  *
  */
+
+
 public abstract class LoadingActivity extends BaseGameActivity {
  
 	// ===========================================================

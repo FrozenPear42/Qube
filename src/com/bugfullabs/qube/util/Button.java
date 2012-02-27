@@ -8,6 +8,14 @@ import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.util.HorizontalAlign;
 import org.anddev.andengine.util.VerticalAlign;
 
+/**
+ * 
+ * @author Bugful Labs
+ * @author Grushenko
+ * @email  wojciech@bugfullabs.pl
+ *
+ */
+
 
 public class Button{
 	
