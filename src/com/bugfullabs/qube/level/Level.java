@@ -112,5 +112,6 @@ public class Level{
 		cubes.get(id).setFinished(true);
 		
 	}
+	
 }
 

@@ -38,6 +38,8 @@ import com.bugfullabs.qube.hud.ItemsHUD;
 import com.bugfullabs.qube.game.CubeEntity;
 import com.bugfullabs.qube.game.GameValues;
 import com.bugfullabs.qube.game.ScoreReader;
+import com.bugfullabs.qube.game.ItemEntity;
+
 import com.openfeint.api.resource.Achievement;
 import com.openfeint.api.resource.Achievement.UnlockCB;
 import com.openfeint.api.resource.Achievement.UpdateProgressionCB;
@@ -192,53 +194,8 @@ public class GameActivity extends LoadingActivity{
 					tableY = (int) ((pSceneTouchEvent.getY())/32);
 					dropY = tableY*32;
 				
-					switch(id){
-					
-					case GameValues.HUD_ITEM_1:	
-						level.setItem(tableX, tableY, GameValues.ITEM_SOLID);
-						gameScene.attachChild(new Sprite(dropX, dropY, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
-					break;
-					
-					case GameValues.HUD_ITEM_2:
-						
-						level.setItem(tableX, tableY, GameValues.ITEM_SOLID);
-						level.setItem(tableX, tableY+1, GameValues.ITEM_SOLID);
-						gameScene.attachChild(new Sprite(dropX, dropY, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
-						gameScene.attachChild(new Sprite(dropX, dropY+32, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
-					
-					break;
-						
-					case GameValues.HUD_ITEM_2_2:
-						level.setItem(tableX, tableY+1, GameValues.ITEM_SOLID);
-						level.setItem(tableX+1, tableY, GameValues.ITEM_SOLID);
-						gameScene.attachChild(new Sprite(dropX, dropY+32, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
-						gameScene.attachChild(new Sprite(dropX+32, dropY, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
-							
-					break;
-					
-					case GameValues.HUD_ITEM_3:
-						level.setItem(tableX, tableY+1, GameValues.ITEM_SOLID);
-						level.setItem(tableX+1, tableY+1, GameValues.ITEM_SOLID);
-						level.setItem(tableX+1, tableY, GameValues.ITEM_SOLID);
-						gameScene.attachChild(new Sprite(dropX, dropY+32, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
-						gameScene.attachChild(new Sprite(dropX+32, dropY+32, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
-						gameScene.attachChild(new Sprite(dropX+32, dropY, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
-						
-					break;
-					
-					case GameValues.HUD_ITEM_4:
-						level.setItem(tableX, tableY+1, GameValues.ITEM_SOLID);
-						level.setItem(tableX+1, tableY+1, GameValues.ITEM_SOLID);
-						level.setItem(tableX+1, tableY, GameValues.ITEM_SOLID);
-						level.setItem(tableX, tableY, GameValues.ITEM_SOLID);
-						gameScene.attachChild(new Sprite(dropX, dropY+32, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
-						gameScene.attachChild(new Sprite(dropX+32, dropY+32, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
-						gameScene.attachChild(new Sprite(dropX+32, dropY, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));
-						gameScene.attachChild(new Sprite(dropX, dropY, GameActivity.this.levelPack.getTexturePackTextureRegionLibrary().get(GameValues.SOLID_ID)));						
-					break;
-						
-					
-					}
+					new ItemEntity(dropX, dropY, id, GameActivity.this.gameScene, GameActivity.this.levelPack);
+
 				}
 			}
 		};
@@ -298,25 +255,24 @@ public class GameActivity extends LoadingActivity{
 	
 		case CubeEntity.DIRECTION_FORWARD:
 		
-			level.getCube(i).setPosition(level.getCube(i).getX(), level.getCube(i).getY()-32);
-			
+			level.getCube(i).move(level.getCube(i).getX(), level.getCube(i).getY()-32);
 		break;
 	
 		case CubeEntity.DIRECTION_RIGHT:
 			
-			level.getCube(i).setPosition(level.getCube(i).getX()+32, level.getCube(i).getY());
+			level.getCube(i).move(level.getCube(i).getX()+32, level.getCube(i).getY());
 			
 		break;
 		
 		case CubeEntity.DIRECTION_LEFT:
 			
-			level.getCube(i).setPosition(level.getCube(i).getX()-32, level.getCube(i).getY());
+			level.getCube(i).move(level.getCube(i).getX()-32, level.getCube(i).getY());
 			
 		break;
 		
 		case CubeEntity.DIRECTION_BACKWARD:
 			
-			level.getCube(i).setPosition(level.getCube(i).getX(), level.getCube(i).getY()+32);
+			level.getCube(i).move(level.getCube(i).getX(), level.getCube(i).getY()+32);
 			
 		break;
 		

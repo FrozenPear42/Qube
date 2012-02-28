@@ -161,6 +161,7 @@ public class MainMenuActivity extends LoadingActivity{
 		public void onButtonPressed(){
 			OpenFeint.login();
 			Dashboard.open();
+			overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 		}
 	};
 	
