@@ -1,9 +1,12 @@
 package com.bugfullabs.qube.game;
 
+import org.anddev.andengine.entity.IEntity;
+import org.anddev.andengine.entity.modifier.IEntityModifier;
 import org.anddev.andengine.entity.modifier.MoveModifier;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import org.anddev.andengine.util.modifier.IModifier;
 
 
 
@@ -30,6 +33,8 @@ public class CubeEntity {
 	private Sprite sprite;
 	
 	private boolean finished = false;
+	
+	private MoveModifier mM; 
 	
 	public CubeEntity(int pX, int pY, int pColor, int pDirection) {
 	x = pX;
@@ -111,8 +116,11 @@ public class CubeEntity {
 		
 	public void move(float endX, float endY){
 	
-		this.sprite.registerEntityModifier(new MoveModifier(0.19f, this.x, endX, this.y, endY));
-			
+		mM = new MoveModifier(0.199f, this.x, endX, this.y, endY);
+	
+		this.mM.setRemoveWhenFinished(true);
+		
+		this.sprite.registerEntityModifier(mM);
 		this.x = endX;
 		this.y = endY;
 

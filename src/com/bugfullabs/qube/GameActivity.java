@@ -83,6 +83,7 @@ public class GameActivity extends LoadingActivity{
 	SharedPreferences.Editor editor;
 	private static final String SETTINGS_FILE = "Settings";
 	
+	private AlignedText scoreText;
 	
 	private Music gameMusic; 
 	
@@ -180,21 +181,12 @@ public class GameActivity extends LoadingActivity{
 				this.getButton(id).setItemPosition(pSceneTouchEvent.getX() - getButton(id).getItemWidth() / 2, pSceneTouchEvent.getY() - getButton(id).getItemHeight() / 2);
 			
 				if(pSceneTouchEvent.isActionUp()){
-					
-					int dropX;
-					int dropY;
-					
-					int tableX;
-					int tableY;
+
 					
 					this.getButton(id).reset();
 					
-					tableX = (int) ((pSceneTouchEvent.getX())/32);
-					dropX = tableX*32;
-					tableY = (int) ((pSceneTouchEvent.getY())/32);
-					dropY = tableY*32;
 				
-					new ItemEntity(dropX, dropY, id, GameActivity.this.gameScene, GameActivity.this.levelPack);
+					new ItemEntity((int)pSceneTouchEvent.getX(), (int)pSceneTouchEvent.getY(), id, GameActivity.this.gameScene, level, GameActivity.this.levelPack);
 
 				}
 			}
@@ -293,19 +285,19 @@ public class GameActivity extends LoadingActivity{
 		switch(level.getCube(i).getDirection()){
 		
 		case CubeEntity.DIRECTION_FORWARD:	
-			proceedCollision(level.getItemNumber((int)level.getCube(i).getX()/32, (int)(level.getCube(i).getY()/32)-1), i, CubeEntity.DIRECTION_RIGHT);
+			proceedCollision(level.getCollision((int)level.getCube(i).getX()/32, (int)(level.getCube(i).getY()/32)-1), i, CubeEntity.DIRECTION_RIGHT);
 			break;
 			
 		case CubeEntity.DIRECTION_BACKWARD:
-			proceedCollision(level.getItemNumber((int)level.getCube(i).getX()/32, (int)(level.getCube(i).getY()/32)+1), i, CubeEntity.DIRECTION_LEFT);
+			proceedCollision(level.getCollision((int)level.getCube(i).getX()/32, (int)(level.getCube(i).getY()/32)+1), i, CubeEntity.DIRECTION_LEFT);
 			break;
 			
 		case CubeEntity.DIRECTION_LEFT:
-			proceedCollision(level.getItemNumber((int)(level.getCube(i).getX()/32)-1, (int)level.getCube(i).getY()/32), i, CubeEntity.DIRECTION_FORWARD);
+			proceedCollision(level.getCollision((int)(level.getCube(i).getX()/32)-1, (int)level.getCube(i).getY()/32), i, CubeEntity.DIRECTION_FORWARD);
 			break;
 			
 		case CubeEntity.DIRECTION_RIGHT:
-			proceedCollision(level.getItemNumber((int)(level.getCube(i).getX()/32)+1, (int)level.getCube(i).getY()/32), i, CubeEntity.DIRECTION_BACKWARD);
+			proceedCollision(level.getCollision((int)(level.getCube(i).getX()/32)+1, (int)level.getCube(i).getY()/32), i, CubeEntity.DIRECTION_BACKWARD);
 			break;
 		}
 		}
@@ -321,19 +313,19 @@ public class GameActivity extends LoadingActivity{
 		switch(level.getCube(cubeId).getDirection()){
 		
 		case CubeEntity.DIRECTION_FORWARD:	
-			proceedCollision(level.getItemNumber((int)level.getCube(cubeId).getX()/32, (int)(level.getCube(cubeId).getY()/32)-1), cubeId, CubeEntity.DIRECTION_RIGHT);
+			proceedCollision(level.getCollision((int)level.getCube(cubeId).getX()/32, (int)(level.getCube(cubeId).getY()/32)-1), cubeId, CubeEntity.DIRECTION_RIGHT);
 			break;
 			
 		case CubeEntity.DIRECTION_BACKWARD:
-			proceedCollision(level.getItemNumber((int)level.getCube(cubeId).getX()/32, (int)(level.getCube(cubeId).getY()/32)+1), cubeId, CubeEntity.DIRECTION_LEFT);
+			proceedCollision(level.getCollision((int)level.getCube(cubeId).getX()/32, (int)(level.getCube(cubeId).getY()/32)+1), cubeId, CubeEntity.DIRECTION_LEFT);
 			break;
 			
 		case CubeEntity.DIRECTION_LEFT:
-			proceedCollision(level.getItemNumber((int)(level.getCube(cubeId).getX()/32)-1, (int)level.getCube(cubeId).getY()/32), cubeId, CubeEntity.DIRECTION_FORWARD);
+			proceedCollision(level.getCollision((int)(level.getCube(cubeId).getX()/32)-1, (int)level.getCube(cubeId).getY()/32), cubeId, CubeEntity.DIRECTION_FORWARD);
 			break;
 			
 		case CubeEntity.DIRECTION_RIGHT:
-			proceedCollision(level.getItemNumber((int)(level.getCube(cubeId).getX()/32)+1, (int)level.getCube(cubeId).getY()/32), cubeId, CubeEntity.DIRECTION_BACKWARD);
+			proceedCollision(level.getCollision((int)(level.getCube(cubeId).getX()/32)+1, (int)level.getCube(cubeId).getY()/32), cubeId, CubeEntity.DIRECTION_BACKWARD);
 			break;
 		}
 	
@@ -357,7 +349,8 @@ public class GameActivity extends LoadingActivity{
 
 		case GameValues.ITEM_STAR:
 
-			//TODO: FIX - STAR HAS TO DISAPEAR
+			//FIXME: STAR HAS TO DISAPEAR
+			
 			mItemsHUD.setStars(stars);
 			stars++;
 			
@@ -452,6 +445,11 @@ public class GameActivity extends LoadingActivity{
 			}
 		};
 	
+		this.scoreText = new AlignedText(0, 0, Stroke, "", HorizontalAlign.LEFT, VerticalAlign.CENTER, 800, 40);
+		
+		this.scoreScene.attachChild(scoreText);
+
+		
 	}
 	
 	private void loadScoreScene(){
@@ -476,10 +474,12 @@ public class GameActivity extends LoadingActivity{
 		
 		for(int i = stars+1; i <= 3; i++){
 		final Sprite star = new Sprite(80+(i*128), 175, starBlank);	
-		scoreScene.attachChild(star);	
+		scoreScene.attachChild(star);
+		
+		scoreText.setText(Integer.toString(this.calculateScore()));
 		}
 		
-		scoreScene.attachChild(new AlignedText(0, 0, Stroke, Integer.toString(this.calculateScore()), HorizontalAlign.LEFT, VerticalAlign.CENTER, 800, 40));
+		
 		
 		this.mEngine.setScene(scoreScene);
 	}

@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import org.anddev.andengine.entity.scene.Scene;
 
 import com.bugfullabs.qube.game.CubeEntity;
+import com.bugfullabs.qube.game.GameValues;
 
 public class Level{
 
 	private int level_pattern[][];
+	private int level_items[][];
 	private int width;
 	private int height;		
 	private int numberOfCubes;		
@@ -27,7 +29,7 @@ public class Level{
 		this.levelTexture = texture;
 		
 		level_pattern = new int[columns][rows];
-
+		level_items = new int[columns][rows];
 		
 		for (int i = 0; i < columns; i++){
 			for (int j = 0; j < rows; j++){				
@@ -41,6 +43,10 @@ public class Level{
 	}
 	
 	public void setItem(final int column, final int row, final int id){
+		
+		if(!isCorrect(column, row)){
+			return;
+		}
 		
 		level_pattern[column][row] = id;
 		
@@ -62,6 +68,9 @@ public class Level{
 	public int getItemNumber(int column, int row)
 	{
 		
+		if(!isCorrect(column, row)){
+			return -1;
+		}
 		return level_pattern[column][row];
 	}
 	
@@ -113,5 +122,53 @@ public class Level{
 		
 	}
 	
+	
+	public void addItemEntityItem(int column, int row){
+		
+		if(!isCorrect(column, row)){
+			return;
+		}
+		
+		this.level_items[column][row] = GameValues.ITEM_SOLID;
+	}
+	
+	public int getItemEntityItem(int column, int row){
+		
+		if(!isCorrect(column, row)){
+			return -1;
+		}
+		
+		return level_items[column][row];
+	}
+	
+	public int getCollision(int column, int row){
+		
+		if(!isCorrect(column, row)){
+			return -1;
+		}
+		
+		if(level_pattern[column][row] != 0){
+			return level_pattern[column][row];
+		}
+		if(level_items[column][row] != 0){
+			return level_items[column][row];
+		}	
+		return 0;
+	}
+
+	public void deleteItemEntityItem(int column, int row) {
+		
+		if(!isCorrect(column, row)){
+			return;
+		}
+		
+		level_items[column][row] = GameValues.ITEM_BLANK;
+	}
+	
+	
+	private boolean isCorrect(int x, int y){
+		
+		return (x <= width && y <= height);
+	}
 }
 
