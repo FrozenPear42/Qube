@@ -57,7 +57,11 @@ public class ItemsHUD extends HUD{
 			mItemsButtons[i] = new SpriteButton(this, 730, 32+i*(ItemsHUD.BUTTON_PADDING+64), HUDTexturePack.getTexturePackTextureRegionLibrary().get(i+1), HUDTexturePack.getTexturePackTextureRegionLibrary().get(BG_ID)){
 				@Override
 				public void onButtonTouchEvent(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY){
-				ItemsHUD.this.onButtonTouchEvent(id, pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);	
+				
+					if(pSceneTouchEvent.isActionDown()){
+					ItemsHUD.this.onButtonDown(id);	
+					}
+					ItemsHUD.this.onButtonTouchEvent(id, pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);	
 				}
 			};
 			
@@ -153,6 +157,11 @@ public class ItemsHUD extends HUD{
 	protected void onButtonTouchEvent(final int id, final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY){
 		
 	}
+	
+	protected void onButtonDown(int id){
+		
+	}
+	
 	
 	protected void onPlay(){
 		

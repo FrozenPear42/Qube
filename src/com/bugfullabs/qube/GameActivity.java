@@ -39,6 +39,8 @@ import com.bugfullabs.qube.game.CubeEntity;
 import com.bugfullabs.qube.game.GameValues;
 import com.bugfullabs.qube.game.ScoreReader;
 import com.bugfullabs.qube.game.ItemEntity;
+import com.bugfullabs.qube.game.ItemEntityFrame;
+
 
 import com.openfeint.api.resource.Achievement;
 import com.openfeint.api.resource.Achievement.UnlockCB;
@@ -95,6 +97,7 @@ public class GameActivity extends LoadingActivity{
 	
 	private float gameTime = 0;
 	
+	private ItemEntityFrame mFrame;
 	
 	@Override
 	protected void assetsToLoad() {
@@ -164,6 +167,8 @@ public class GameActivity extends LoadingActivity{
 		}
 		gameScene = LevelSceneFactory.createScene(level, levelPack);
 		
+		
+		
 		mItemsHUD = new ItemsHUD(this.mCamera, levelItemsPack){
 			@Override
 			protected void onPlay(){
@@ -179,7 +184,7 @@ public class GameActivity extends LoadingActivity{
 				Log.i("TOUCH EVENT","Game");
 				this.getButton(id).setItemScale(1.33f, 1.33f);
 				this.getButton(id).setItemPosition(pSceneTouchEvent.getX() - getButton(id).getItemWidth() / 2, pSceneTouchEvent.getY() - getButton(id).getItemHeight() / 2);
-			
+				GameActivity.this.mFrame.setPosition((int)(pSceneTouchEvent.getX()/32)*32, (int)(pSceneTouchEvent.getY()/32)*32);
 				if(pSceneTouchEvent.isActionUp()){
 
 					
@@ -189,6 +194,12 @@ public class GameActivity extends LoadingActivity{
 					new ItemEntity((int)pSceneTouchEvent.getX(), (int)pSceneTouchEvent.getY(), id, GameActivity.this.gameScene, level, GameActivity.this.levelPack);
 
 				}
+
+			}
+			
+			@Override
+			public void onButtonDown(int id){
+				mFrame = new ItemEntityFrame(id, 0, gameScene, 0);
 			}
 		};
 
