@@ -67,7 +67,17 @@ public class ItemEntityFrame{
 			break;
 				
 		case ItemEntity.TEMPLATE_2_2:
-				
+			
+			mLines.add(0, new Line(mX+32, mY, mX+64, mY, 3));
+			mLines.add(1, new Line(mX+64, mY, mX+64, mY+32, 3));
+			mLines.add(2, new Line(mX+64, mY+32, mX+32, mY+32, 3));
+			mLines.add(3, new Line(mX+32, mY+32, mX+32, mY, 3));
+			
+			mLines.add(4, new Line(mX, mY+32, mX, mY+64, 3));
+			mLines.add(5, new Line(mX, mY+64, mX+32, mY+64, 3));
+			mLines.add(6, new Line(mX+32, mY+64, mX+32, mY+32, 3));
+			mLines.add(7, new Line(mX+32, mY+32, mX, mY+32, 3));
+			
 			break;
 			
 		case ItemEntity.TEMPLATE_3:
@@ -124,6 +134,19 @@ public class ItemEntityFrame{
 		mLines.get(3).setPosition(rX, rY+32, rX, rY);
 		break;
 
+		case ItemEntity.TEMPLATE_2_2:
+			
+			mLines.get(0).setPosition(rX16+32, rY16, rX16+64, rY16);
+			mLines.get(1).setPosition(rX16+64, rY16, rX16+64, rY16+32);
+			mLines.get(2).setPosition(rX16+64, rY16+32, rX16+32, rY16+32);
+			mLines.get(3).setPosition(rX16+32, rY16+32, rX16+32, rY16);
+			mLines.get(4).setPosition(rX16, rY16+32, rX16, rY16+64);
+			mLines.get(5).setPosition(rX16, rY16+64, rX16+32, rY16+64);
+			mLines.get(6).setPosition(rX16+32, rY16+64, rX16+32, rY16+32);
+			mLines.get(7).setPosition(rX16+32, rY16+32, rX16, rY16+32);
+			
+			break;
+		
 		case ItemEntity.TEMPLATE_3:
 			
 			mLines.get(0).setPosition(rX16+32, rY16, rX16+64, rY16);

@@ -1,6 +1,5 @@
-It will be a simple android game based on AndEngine.
-Currently it is under development.
-
+Simple Android puzzle game.
+Powered by AndEngine.
 
 Class PrivateValues is missing, because it contains private data like OpenFeint values.
 
