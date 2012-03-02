@@ -183,13 +183,13 @@ public class GameActivity extends LoadingActivity{
 			protected void onButtonTouchEvent(final int id, final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY){
 				Log.i("TOUCH EVENT","Game");
 				this.getButton(id).setItemScale(1.33f, 1.33f);
-				this.getButton(id).setItemPosition(pSceneTouchEvent.getX() - getButton(id).getItemWidth() / 2, pSceneTouchEvent.getY() - getButton(id).getItemHeight() / 2);
-				GameActivity.this.mFrame.setPosition((int)(pSceneTouchEvent.getX()/32)*32, (int)(pSceneTouchEvent.getY()/32)*32);
+				this.getButton(id).setItemPosition(pSceneTouchEvent.getX() - 16, pSceneTouchEvent.getY() - 16);
+				GameActivity.this.mFrame.setPosition((int)pSceneTouchEvent.getX(), (int)pSceneTouchEvent.getY());
+				
 				if(pSceneTouchEvent.isActionUp()){
-
-					
 					this.getButton(id).reset();
 					
+					GameActivity.this.mFrame.remove();
 				
 					new ItemEntity((int)pSceneTouchEvent.getX(), (int)pSceneTouchEvent.getY(), id, GameActivity.this.gameScene, level, GameActivity.this.levelPack);
 
@@ -199,7 +199,7 @@ public class GameActivity extends LoadingActivity{
 			
 			@Override
 			public void onButtonDown(int id){
-				mFrame = new ItemEntityFrame(id, 0, gameScene, 0);
+				mFrame = new ItemEntityFrame(0, 0, gameScene, id);
 			}
 		};
 

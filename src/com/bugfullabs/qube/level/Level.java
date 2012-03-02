@@ -168,7 +168,7 @@ public class Level{
 	
 	private boolean isCorrect(int x, int y){
 		
-		return (x <= width && y <= height);
+		return !(x < 0 || y < 0 || x > width || y > height);
 	}
 }
 
