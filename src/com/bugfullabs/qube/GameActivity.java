@@ -59,6 +59,8 @@ import com.openfeint.api.resource.Score;
 public class GameActivity extends LoadingActivity{
 	
 	public static Level level;
+
+	private static boolean outside;
 	
 	private Scene gameScene;
 	private Scene scoreScene;
@@ -191,7 +193,12 @@ public class GameActivity extends LoadingActivity{
 					
 					GameActivity.this.mFrame.remove();
 				
-					new ItemEntity((int)pSceneTouchEvent.getX(), (int)pSceneTouchEvent.getY(), id, GameActivity.this.gameScene, level, GameActivity.this.levelPack);
+					new ItemEntity((int)pSceneTouchEvent.getX(), (int)pSceneTouchEvent.getY(), id, GameActivity.this.gameScene, level, GameActivity.this.levelPack){
+						@Override
+						public void onTouched(TouchEvent pTouchEvent, float pLocalX, float pLocalY){
+							this.remove();
+						}
+					};
 
 				}
 
@@ -247,6 +254,13 @@ public class GameActivity extends LoadingActivity{
 	private void onTimerUpdate(){
 		
 		checkCollisions();
+		
+		if(outside)
+		{
+			this.stop();
+			GameActivity.outside = false;
+		}
+		
 		
 		if(cubesFinished == level.getNumberOfCubes()){
 			loadScoreScene();
@@ -534,6 +548,16 @@ public class GameActivity extends LoadingActivity{
 	private int calculateScore(){
 		return (int) ((this.stars+1)* 1000 + (1/this.gameTime)*(50000.0f));
 	}
+	
+	public static void setOutside(boolean b){
+	 GameActivity.outside = b;
+	}
+	
+	public static boolean getOutside(){
+		return GameActivity.outside;
+	}
+	
+	
 }
 
 

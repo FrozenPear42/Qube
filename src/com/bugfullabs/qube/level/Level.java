@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.anddev.andengine.entity.scene.Scene;
 
+import com.bugfullabs.qube.GameActivity;
 import com.bugfullabs.qube.game.CubeEntity;
 import com.bugfullabs.qube.game.GameValues;
 
@@ -69,6 +70,7 @@ public class Level{
 	{
 		
 		if(!isCorrect(column, row)){
+			GameActivity.setOutside(true);
 			return -1;
 		}
 		return level_pattern[column][row];
@@ -135,6 +137,7 @@ public class Level{
 	public int getItemEntityItem(int column, int row){
 		
 		if(!isCorrect(column, row)){
+			GameActivity.setOutside(true);
 			return -1;
 		}
 		
@@ -144,6 +147,7 @@ public class Level{
 	public int getCollision(int column, int row){
 		
 		if(!isCorrect(column, row)){
+			GameActivity.setOutside(true);
 			return -1;
 		}
 		
@@ -165,10 +169,10 @@ public class Level{
 		level_items[column][row] = GameValues.ITEM_BLANK;
 	}
 	
-	
 	private boolean isCorrect(int x, int y){
 		
-		return !(x < 0 || y < 0 || x > width || y > height);
+		return !(x < 0 || y < 0 || x >= width || y >= height);
 	}
+	
 }
 

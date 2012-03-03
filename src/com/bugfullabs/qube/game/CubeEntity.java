@@ -73,6 +73,7 @@ public class CubeEntity {
 	}
 	
 	public void moveToInitPosition(){
+		sprite.unregisterEntityModifier(mM);
 		sprite.setPosition(initX, initY);
 		this.x = initX;
 		this.y = initY;

@@ -3,13 +3,22 @@ package com.bugfullabs.qube.game;
 import java.util.ArrayList;
 
 import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.scene.Scene.ITouchArea;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;
+import org.anddev.andengine.input.touch.TouchEvent;
 
 import com.bugfullabs.qube.level.Level;
 
+/**
+ * 
+ * @author Bugful Labs
+ * @author Grushenko
+ * @email  wojciech@bugfullabs.pl
+ *
+ */
 
-public class ItemEntity{
+public class ItemEntity implements ITouchArea{
 	
 	public static final int TEMPLATE_1 = 0;
 	public static final int TEMPLATE_2_1 = 1;
@@ -25,6 +34,14 @@ public class ItemEntity{
 	
 	private int mX = 0;
 	private int mY = 0;
+	
+	private int rX;
+	private int rY;
+	
+	private int rX16;
+	private int rY16;
+	
+	
 	private int mTemplate;
 	
 	private Level mLevel;
@@ -45,8 +62,18 @@ public class ItemEntity{
 		this.mPack = pPack;
 		this.mScene = pScene;
 		this.mLevel = pLevel;
+		
+		this.rX = round(mX);
+		this.rY = round(mY);
+		
+		this.rX16 = round(mX-16);
+		this.rY16 = round(mY-16);
+		
+		
+		this.mScene.registerTouchArea(this);
+		
 		this.draw(pTemplate);
-		}
+	}
 	
 	private void draw(int pTemplate){
 		
@@ -155,10 +182,70 @@ public class ItemEntity{
 		for(int i = 0;  i < mSprites.size(); i++){
 			
 			this.mSprites.get(i).detachSelf();
-			this.mSprites.clear();
 			this.mLevel.deleteItemEntityItem((int)this.mSprites.get(i).getX()/32, (int)this.mSprites.get(i).getY()/32);
-			
 		}
+		this.mSprites.clear();
+	}
+
+	@Override
+	public boolean contains(float pX, float pY) {
+		
+		switch(mTemplate){
+		
+		case TEMPLATE_1:
+		return (pX >= rX && pX <= rX+32 && pY >= rY && pY <= rY+32);
+		
+		case TEMPLATE_2_1:
+		return (pX >= rX && pX <= rX+64 && pY >= rY && pY <= rY+32);
+		
+		case TEMPLATE_2_2:
+		//TODO
+			
+		return (pX >= mX && pX <= mX+64 && pY >= mY && pY <= mY+64);
+		
+		case TEMPLATE_3:
+		//TODO
+			
+		return (pX >= mX && pX <= mX+64 && pY >= mY && pY <= mY+64);
+		
+		case TEMPLATE_4:
+		return (pX >= rX16 && pX <= rX16+64 && pY >= rY16 && pY <= rY16+64);
+		
+		default:
+		return false;
+		
+		}
+	
+	}
+
+	@Override
+	public float[] convertLocalToSceneCoordinates(float pX, float pY) {
+		float tmp[] = new float[2];
+		tmp[0] = pX;
+		tmp[1] = pY;
+		return tmp;
+	}
+
+	@Override
+	public float[] convertSceneToLocalCoordinates(float pX, float pY) {
+		float tmp[] = new float[2];
+		tmp[0] = 0;
+		tmp[1] = 0;
+		return tmp;
+		}
+
+	@Override
+	public boolean onAreaTouched(TouchEvent pTouchEvent, float pLocalX, float pLocalY) {
+		ItemEntity.this.onTouched(pTouchEvent, pLocalX, pLocalY);
+		return true;
+	}
+	
+	public void onTouched(TouchEvent pTouchEvent, float pLocalX, float pLocalY){
+		
+	}
+	
+	private int round(int n){
+		return (int)((n)/32)*32;
 	}
 	
 	
