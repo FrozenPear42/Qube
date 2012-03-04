@@ -29,6 +29,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 import com.bugfullabs.qube.level.Level;
 import com.bugfullabs.qube.level.LevelFileReader;
+import com.bugfullabs.qube.level.LevelScene;
 import com.bugfullabs.qube.level.LevelSceneFactory;
 import com.bugfullabs.qube.util.AlignedText;
 import com.bugfullabs.qube.util.Button;
@@ -62,7 +63,7 @@ public class GameActivity extends LoadingActivity{
 
 	private static boolean outside;
 	
-	private Scene gameScene;
+	private LevelScene gameScene;
 	private Scene scoreScene;
 	
 	
@@ -373,12 +374,10 @@ public class GameActivity extends LoadingActivity{
 			break;
 
 		case GameValues.ITEM_STAR:
-
-			//FIXME: STAR HAS TO DISAPEAR
 			
 			mItemsHUD.setStars(stars);
 			stars++;
-			
+			gameScene.removeStar(level.getCube(cubeId).getX(), level.getCube(cubeId).getY());
 			break;			
 		
 		
@@ -466,6 +465,7 @@ public class GameActivity extends LoadingActivity{
 			@Override
 			public boolean onButtonPressed(){
 				GameActivity.this.finish();
+				overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 				return true;
 			}
 		};

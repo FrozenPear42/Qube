@@ -1,12 +1,10 @@
 package com.bugfullabs.qube.game;
 
 import org.anddev.andengine.entity.IEntity;
-import org.anddev.andengine.entity.modifier.IEntityModifier;
 import org.anddev.andengine.entity.modifier.MoveModifier;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.opengl.texture.region.TextureRegion;
-import org.anddev.andengine.util.modifier.IModifier;
 
 
 
@@ -126,5 +124,14 @@ public class CubeEntity {
 		this.y = endY;
 
 		
+	}
+	
+	
+	public void attachChild(IEntity pEntity){
+		sprite.attachChild(pEntity);
+	}
+	
+	public void detachChildren(){
+		sprite.detachChildren();
 	}
 }

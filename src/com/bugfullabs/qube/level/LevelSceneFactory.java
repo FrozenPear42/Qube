@@ -1,10 +1,10 @@
 package com.bugfullabs.qube.level;
 
-import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.background.SpriteBackground;
 import org.anddev.andengine.entity.sprite.Sprite;
 import org.anddev.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;
 
+import com.bugfullabs.qube.game.CubeEntity;
 import com.bugfullabs.qube.game.GameValues;
 
 
@@ -29,13 +29,13 @@ public class LevelSceneFactory{
 	public static final int END6_ID = 13;
 	public static final int SOLID_ID = 14;
 	public static final int STAR_ID = 15;	
-	public static final int BG_ID = 16;
-	
+	public static final int BG_ID = 17;
+	public static final int ARROW_ID = 16;
 
 	
-	public static Scene createScene(Level level, TexturePack txPack){	
+	public static LevelScene createScene(Level level, TexturePack txPack){	
 			
-			Scene levelScene = new Scene();	
+			LevelScene levelScene = new LevelScene(level.getNumberOfCubes());	
 			  
 			levelScene.setBackground(new SpriteBackground(new Sprite(0, 0, txPack.getTexturePackTextureRegionLibrary().get(BG_ID))));
 
@@ -50,7 +50,7 @@ public class LevelSceneFactory{
 		    		  break;
 
 		    	  case GameValues.ITEM_STAR:	//STAR
-		    		  levelScene.attachChild(new Sprite(i*32, j*32, txPack.getTexturePackTextureRegionLibrary().get(STAR_ID)));
+		    		  levelScene.addStar(new Sprite(i*32, j*32, txPack.getTexturePackTextureRegionLibrary().get(STAR_ID)));
 		    		  break;
 		    		  
 			  	  default:
@@ -73,6 +73,45 @@ public class LevelSceneFactory{
 				level.getCube(i).setTextureRegion(txPack.getTexturePackTextureRegionLibrary().get(level.getCube(i).getColor()));
 				level.getCube(i).attachToScene(levelScene);
 				level.getCube(i).setPosition(level.getCube(i).getX(), level.getCube(i).getY());
+			
+				Sprite arrow = new Sprite(level.getCube(i).getX(), level.getCube(i).getY(), txPack.getTexturePackTextureRegionLibrary().get(ARROW_ID));
+				
+				
+				switch(level.getCube(i).getDirection()){
+				
+				case CubeEntity.DIRECTION_FORWARD:
+					arrow.setPosition(level.getCube(i).getX(), level.getCube(i).getY()-32);
+					arrow.setRotation(270);
+					levelScene.attachChild(arrow);
+				
+					break;
+					
+				case CubeEntity.DIRECTION_BACKWARD:
+					arrow.setPosition(level.getCube(i).getX(), level.getCube(i).getY()+32);
+					arrow.setRotation(90);
+					levelScene.attachChild(arrow);
+				
+					break;
+					
+				case CubeEntity.DIRECTION_LEFT:
+					
+					arrow.setPosition(level.getCube(i).getX()-32, level.getCube(i).getY());
+					arrow.setRotation(180);
+					levelScene.attachChild(arrow);
+				
+					break;
+	
+				case CubeEntity.DIRECTION_RIGHT:
+					arrow.setPosition(level.getCube(i).getX()+32, level.getCube(i).getY());
+					arrow.setRotation(0);
+					levelScene.attachChild(arrow);
+
+					break;
+	
+					
+				}
+			
+				
 			}
 			
 			

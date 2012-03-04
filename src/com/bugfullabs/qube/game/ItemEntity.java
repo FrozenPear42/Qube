@@ -199,14 +199,11 @@ public class ItemEntity implements ITouchArea{
 		return (pX >= rX && pX <= rX+64 && pY >= rY && pY <= rY+32);
 		
 		case TEMPLATE_2_2:
-		//TODO
-			
-		return (pX >= mX && pX <= mX+64 && pY >= mY && pY <= mY+64);
+		return ((pX >= rX16+32 && pX <= rX16+64 && pY >= rY16 && pY <= rY16+32) || (pX >= rX16 && pX <= rX16+32 && pY >= rY16+32 && pY <= rY16+64));
 		
 		case TEMPLATE_3:
-		//TODO
-			
-		return (pX >= mX && pX <= mX+64 && pY >= mY && pY <= mY+64);
+					
+		return ((pX >= rX16 && pX <= rX16+64 && pY >= rY16+32 && pY <= rY+64) || (pX >= rX16 && pX >= rX16+32 && pY >= rY16 && pY >= rY16+32));
 		
 		case TEMPLATE_4:
 		return (pX >= rX16 && pX <= rX16+64 && pY >= rY16 && pY <= rY16+64);
