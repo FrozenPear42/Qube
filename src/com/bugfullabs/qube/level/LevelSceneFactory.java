@@ -82,14 +82,12 @@ public class LevelSceneFactory{
 				case CubeEntity.DIRECTION_FORWARD:
 					arrow.setPosition(level.getCube(i).getX(), level.getCube(i).getY()-32);
 					arrow.setRotation(270);
-					levelScene.attachChild(arrow);
 				
 					break;
 					
 				case CubeEntity.DIRECTION_BACKWARD:
 					arrow.setPosition(level.getCube(i).getX(), level.getCube(i).getY()+32);
 					arrow.setRotation(90);
-					levelScene.attachChild(arrow);
 				
 					break;
 					
@@ -97,19 +95,19 @@ public class LevelSceneFactory{
 					
 					arrow.setPosition(level.getCube(i).getX()-32, level.getCube(i).getY());
 					arrow.setRotation(180);
-					levelScene.attachChild(arrow);
 				
 					break;
 	
 				case CubeEntity.DIRECTION_RIGHT:
 					arrow.setPosition(level.getCube(i).getX()+32, level.getCube(i).getY());
 					arrow.setRotation(0);
-					levelScene.attachChild(arrow);
 
 					break;
 	
 					
 				}
+				
+				levelScene.addArrow(arrow);
 			
 				
 			}

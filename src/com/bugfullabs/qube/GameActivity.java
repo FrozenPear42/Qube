@@ -63,6 +63,8 @@ public class GameActivity extends LoadingActivity{
 
 	private static boolean outside;
 	
+	private boolean isPlay = false;
+	
 	private LevelScene gameScene;
 	private Scene scoreScene;
 	
@@ -197,7 +199,10 @@ public class GameActivity extends LoadingActivity{
 					new ItemEntity((int)pSceneTouchEvent.getX(), (int)pSceneTouchEvent.getY(), id, GameActivity.this.gameScene, level, GameActivity.this.levelPack){
 						@Override
 						public void onTouched(TouchEvent pTouchEvent, float pLocalX, float pLocalY){
+							
+							if(!GameActivity.this.isPlay)
 							this.remove();
+							
 						}
 					};
 
@@ -229,6 +234,8 @@ public class GameActivity extends LoadingActivity{
 	protected void start() {
 		Log.i("HUD Item selected: ", "PLAY");
 		mItemsHUD.setType(ItemsHUD.GAME);
+		this.isPlay = true;
+		this.gameScene.setArrowsVisibility(false);
 		GameActivity.this.mEngine.registerUpdateHandler(updateTimer);
 	}
 
@@ -239,6 +246,9 @@ public class GameActivity extends LoadingActivity{
 		
 		for(int i = 0; i < level.getNumberOfCubes(); i++){
 		level.getCube(i).moveToInitPosition();
+		this.isPlay = false;
+		this.gameTime = 0;
+		this.gameScene.setArrowsVisibility(true);
 		}
 		
 		
@@ -260,6 +270,7 @@ public class GameActivity extends LoadingActivity{
 		{
 			this.stop();
 			GameActivity.outside = false;
+			return;
 		}
 		
 		
@@ -405,7 +416,7 @@ public class GameActivity extends LoadingActivity{
 	
 	
 	private void nextLevel(){
-		
+
 		this.stars = 0;
 		this.cubesFinished = 0;
 		this.gameTime = 0;

@@ -12,12 +12,18 @@ public class LevelScene extends Scene{
 	private ArrayList<Sprite> mArrows;
 	private ArrayList<Sprite> mStars;
 	
+	
 	LevelScene(int numberOfCubes){
 		super();
 	
 		mStars = new ArrayList<Sprite>(3);
 		mArrows = new ArrayList<Sprite>(numberOfCubes);
 		
+	}
+	
+	public void addArrow(Sprite arrow){
+		mArrows.add(arrow);
+		this.attachChild(arrow);
 	}
 	
 	public void addStar(Sprite star){
@@ -49,6 +55,12 @@ public class LevelScene extends Scene{
 		
 	}
 	
-	
+	public void setArrowsVisibility(boolean b){
+			for(int i = 0; i < mArrows.size(); i++)
+			{
+			mArrows.get(i).setVisible(b);	
+			}
+	}
+
 }
 
