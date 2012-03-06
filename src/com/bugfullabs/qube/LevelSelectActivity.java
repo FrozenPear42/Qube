@@ -4,7 +4,7 @@ import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.camera.Camera;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
-import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.anddev.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.entity.scene.background.SpriteBackground;
@@ -121,7 +121,7 @@ public class LevelSelectActivity extends BaseGameActivity implements IScrollDete
         public Engine onLoadEngine() {
                 this.mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
  
-                final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera);
+                final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE, new FillResolutionPolicy(), this.mCamera);
                 engineOptions.getTouchOptions().setRunOnUpdateThread(true);
                 return new Engine(engineOptions);
         }

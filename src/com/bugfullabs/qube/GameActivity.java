@@ -157,6 +157,7 @@ public class GameActivity extends LoadingActivity{
 		settings = getSharedPreferences(SETTINGS_FILE, 0);
 		editor = settings.edit();		
 	
+		
 	    super.setLoadingProgress(100);
 	    
 	}
@@ -492,7 +493,9 @@ public class GameActivity extends LoadingActivity{
 		this.mEngine.unregisterUpdateHandler(updateTimer);
 		
 		this.mItemsHUD.hide();
-			
+		
+		
+		
 		if(ScoreReader.getStars(level) < stars){
 		ScoreReader.setStars(level, stars);
 		}
@@ -503,17 +506,20 @@ public class GameActivity extends LoadingActivity{
 		
 		checkAchievements();
 		
+		
+		//FIXME: TO MANY ALOCATIONS - BLACK SCREEN
 		for(int i = 1; i <= stars; i++){
 		final Sprite star = new Sprite(80+(i*128), 175, starFull);	
 		scoreScene.attachChild(star);
 		}
-		
+		//FIXME: TO MANY ALOCATIONS - BLACK SCREEN
 		for(int i = stars+1; i <= 3; i++){
 		final Sprite star = new Sprite(80+(i*128), 175, starBlank);	
 		scoreScene.attachChild(star);
+		}
+		
 		
 		scoreText.setText(Integer.toString(this.calculateScore()));
-		}
 		
 		
 		

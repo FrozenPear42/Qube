@@ -12,9 +12,7 @@ public class LevelHandler extends DefaultHandler{
 		// Fields
 		// ===========================================================
 		
-		private boolean in_leveltag = false;
 		private boolean in_rowtag = false;
-		private boolean in_cubestag = false;
 		
 		private int current_row = 0;
 		
@@ -47,8 +45,7 @@ public class LevelHandler extends DefaultHandler{
 		public void startElement(String namespaceURI, String localName,
 				String qName, Attributes atts) throws SAXException {
 			if (localName.equals("level")) {
-				this.in_leveltag = true;
-				
+
 				String rowsValue = atts.getValue("rows");
 				String columnsValue = atts.getValue("columns");
 				
@@ -67,7 +64,6 @@ public class LevelHandler extends DefaultHandler{
 				level.setItem(Integer.parseInt(atts.getValue("column")) - 1, current_row - 1,  Integer.parseInt(atts.getValue("id")));
 			}
 			}else if (localName.equals("cubes")){
-				in_cubestag = true;	
 				level.setNumberOfCubes(Integer.parseInt(atts.getValue("number")));
 			}else if(localName.equals("cube")){
 
@@ -84,11 +80,9 @@ public class LevelHandler extends DefaultHandler{
 		public void endElement(String namespaceURI, String localName, String qName)
 				throws SAXException {
 			if (localName.equals("level")) {
-				this.in_leveltag = false;
 			}else if (localName.equals("row")) {
 				this.in_rowtag = false;
 			}else if (localName.equals("cubes")) {
-				this.in_cubestag = false;
 			}
 			
 			
