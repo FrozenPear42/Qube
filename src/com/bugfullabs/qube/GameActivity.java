@@ -192,11 +192,20 @@ public class GameActivity extends LoadingActivity{
 				this.getButton(id).setItemPosition(pSceneTouchEvent.getX() - 16, pSceneTouchEvent.getY() - 16);
 				GameActivity.this.mFrame.setPosition((int)pSceneTouchEvent.getX(), (int)pSceneTouchEvent.getY());
 				
+				if(!canBePlaced((int)pSceneTouchEvent.getX(), (int)pSceneTouchEvent.getY(), id)){
+				//TODO: can't be placed - red frame
+				}else{
+				//TODO: can be placed - green frame
+				}
+				
+				
 				if(pSceneTouchEvent.isActionUp()){
 					this.getButton(id).reset();
 					
 					GameActivity.this.mFrame.remove();
-				
+					
+					if(canBePlaced((int)pSceneTouchEvent.getX(), (int)pSceneTouchEvent.getY(), id)){
+					
 					new ItemEntity((int)pSceneTouchEvent.getX(), (int)pSceneTouchEvent.getY(), id, GameActivity.this.gameScene, level, GameActivity.this.levelPack){
 						@Override
 						public void onTouched(TouchEvent pTouchEvent, float pLocalX, float pLocalY){
@@ -207,6 +216,8 @@ public class GameActivity extends LoadingActivity{
 						}
 					};
 
+					}
+					
 				}
 
 			}
@@ -233,27 +244,37 @@ public class GameActivity extends LoadingActivity{
 	
 	
 	protected void start() {
+		
+
+		GameActivity.this.mEngine.registerUpdateHandler(updateTimer);
+		
 		Log.i("HUD Item selected: ", "PLAY");
 		mItemsHUD.setType(ItemsHUD.GAME);
 		this.isPlay = true;
 		this.gameScene.setArrowsVisibility(false);
-		GameActivity.this.mEngine.registerUpdateHandler(updateTimer);
 	}
 
 
 
 	protected void stop() {
+		
+		GameActivity.this.mEngine.unregisterUpdateHandler(updateTimer);
+		
 		Log.i("HUD Item selected: ", "STOP");
 		
 		for(int i = 0; i < level.getNumberOfCubes(); i++){
+		if(level.getCube(i).isFinished()){	
+		level.getCube(i).reset();
+		}else{
 		level.getCube(i).moveToInitPosition();
+		}
+		
+		}
+		this.cubesFinished = 0;
 		this.isPlay = false;
 		this.gameTime = 0;
 		this.gameScene.setArrowsVisibility(true);
-		}
 		
-		
-		GameActivity.this.mEngine.unregisterUpdateHandler(updateTimer);
 		mItemsHUD.setType(ItemsHUD.ITEMS);
 	}
 
@@ -423,8 +444,7 @@ public class GameActivity extends LoadingActivity{
 		this.gameTime = 0;
 		this.mItemsHUD.show();
 		
-		LevelFileReader lvReader = new LevelFileReader(this, "level_"+Integer.toString(level.getLevelpackId())+"_"+Integer.toString(level.getLevelId()+1));
-		level = lvReader.getLevel();
+		level =  new LevelFileReader(this, "level_"+Integer.toString(level.getLevelpackId())+"_"+Integer.toString(level.getLevelId()+1)).getLevel();
 		
 		this.mEngine.unregisterUpdateHandler(updateTimer);
 		
@@ -538,7 +558,7 @@ public class GameActivity extends LoadingActivity{
 			}
 		});
 
-		new Achievement(PrivateValues.OFAchievementMasterOfCubes).updateProgression((ScoreReader.getTotalCubes()/PrivateValues.OFAchievementMasterOfCubesValue)*100, new UpdateProgressionCB()
+		new Achievement(PrivateValues.OFAchievementMasterOfCubes).updateProgression((ScoreReader.getTotalCubes()*100)/PrivateValues.OFAchievementMasterOfCubesValue, new UpdateProgressionCB()
 		{
 			@Override
 			public void onSuccess(boolean arg0) {
@@ -574,6 +594,37 @@ public class GameActivity extends LoadingActivity{
 		return GameActivity.outside;
 	}
 	
+	
+	private boolean canBePlaced(int x, int y, int template){
+		
+		switch(template){
+		case ItemEntity.TEMPLATE_1:
+			return (level.getCollision(x/32, y/32) == GameValues.ITEM_BLANK);
+		
+		case ItemEntity.TEMPLATE_2_1:
+			return (level.getCollision(x/32, y/32) == GameValues.ITEM_BLANK && level.getCollision((x+32)/32, y/32) == GameValues.ITEM_BLANK);
+		
+		case ItemEntity.TEMPLATE_2_2:
+			return (level.getCollision((x+16)/32, (y-16)/32) == GameValues.ITEM_BLANK && level.getCollision((x-16)/32, (y+16)/32) == GameValues.ITEM_BLANK);
+			
+		
+		case ItemEntity.TEMPLATE_3:
+			return (level.getCollision((x+16)/32, (y-16)/32) == GameValues.ITEM_BLANK && level.getCollision((x-16)/32, (y+16)/32) == GameValues.ITEM_BLANK && level.getCollision((x+16)/32, (y+16)/32) == GameValues.ITEM_BLANK);
+		
+		case ItemEntity.TEMPLATE_4:
+			return (level.getCollision((x-16)/32, (y-16)/32) == GameValues.ITEM_BLANK && level.getCollision((x+16)/32, (y-16)/32) == GameValues.ITEM_BLANK && level.getCollision((x-16)/32, (y+16)/32) == GameValues.ITEM_BLANK && level.getCollision((x+16)/32, (y+16)/32) == GameValues.ITEM_BLANK);
+			
+			
+		default:
+			return false;
+		}
+	}
+	
+	
+	@SuppressWarnings("unused")
+	private int round(int n){
+		return (int)((n)/32)*32;
+	}
 	
 }
 

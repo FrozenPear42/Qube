@@ -174,5 +174,15 @@ public class Level{
 		return !(x < 0 || y < 0 || x >= width || y >= height);
 	}
 	
+	public void restoreCubes(Scene scene){
+		
+		for(int i= 0; i < numberOfCubes; i++){
+			this.removeCube(i, scene);
+			this.cubes.get(i).attachToScene(scene);
+			this.cubes.get(i).setFinished(false);
+		}
+		
+	}
+	
 }
 

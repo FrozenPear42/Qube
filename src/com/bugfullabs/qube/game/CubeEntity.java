@@ -34,6 +34,9 @@ public class CubeEntity {
 	
 	private MoveModifier mM; 
 	
+	private Scene mScene;
+	
+	
 	public CubeEntity(int pX, int pY, int pColor, int pDirection) {
 	x = pX;
 	y = pY;
@@ -93,6 +96,7 @@ public class CubeEntity {
 	public Scene attachToScene(Scene scene){
 		
 		scene.attachChild(sprite);
+		this.mScene = scene;
 		
 		return scene;
 	}
@@ -124,6 +128,14 @@ public class CubeEntity {
 		this.y = endY;
 
 		
+	}
+	
+	public void reset(){
+		//TODO: WHY CUBE STAY IN ITS POSITION?
+		this.removeCube(mScene);
+		this.attachToScene(mScene);
+		this.moveToInitPosition();
+		this.setFinished(false);
 	}
 	
 	
