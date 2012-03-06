@@ -169,9 +169,9 @@ public class Level{
 		level_items[column][row] = GameValues.ITEM_BLANK;
 	}
 	
-	private boolean isCorrect(int x, int y){
+	private boolean isCorrect(int column, int row){
 		
-		return !(x < 0 || y < 0 || x >= width || y >= height);
+		return !(column < 0 || row < 0 || column >= width || row >= height);
 	}
 	
 	public void restoreCubes(Scene scene){

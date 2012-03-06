@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.entity.scene.Scene;
 
+import android.graphics.Color;
+
 /**
  * (c) 2012 Bugful Labs
  * 
@@ -185,5 +187,29 @@ public class ItemEntityFrame{
 		return (int)((n)/32)*32;
 	}
 	
+	
+	public void setColor( int pRed, int pGreen, int pBlue){
+		for(int i = 0; i < mLines.size(); i++){
+			mLines.get(i).setColor(pRed, pGreen, pBlue);
+		}
+	}
+
+	public void setColor(int color){
+		for(int i = 0; i < mLines.size(); i++){
+			
+			switch(color){
+			case Color.RED:
+				mLines.get(i).setColor(1.0f, 0.1f, 0.1f);
+				break;
+			
+			case Color.WHITE:
+				mLines.get(i).setColor(1, 1, 1);
+				break;
+				
+				
+			
+			}
+		}
+	}
 	
 }

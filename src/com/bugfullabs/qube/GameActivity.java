@@ -193,9 +193,9 @@ public class GameActivity extends LoadingActivity{
 				GameActivity.this.mFrame.setPosition((int)pSceneTouchEvent.getX(), (int)pSceneTouchEvent.getY());
 				
 				if(!canBePlaced((int)pSceneTouchEvent.getX(), (int)pSceneTouchEvent.getY(), id)){
-				//TODO: can't be placed - red frame
+				GameActivity.this.mFrame.setColor(Color.RED);
 				}else{
-				//TODO: can be placed - green frame
+					GameActivity.this.mFrame.setColor(Color.WHITE);
 				}
 				
 				
